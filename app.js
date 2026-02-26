@@ -21,6 +21,16 @@ document.addEventListener('DOMContentLoaded',()=>{
 
   const avatarEl = document.getElementById('avatar');
   const currentUser = (function(){ try{ return JSON.parse(localStorage.getItem('currentUser')); }catch(e){ return null; }})();
+  // If there's no signed-in user, redirect to the login page immediately.
+  // This prevents unauthenticated users from seeing the app pages.
+  try{
+    const isLoginPage = /login\.html$/.test(window.location.pathname) || window.location.pathname.endsWith('/login');
+    if(!currentUser && !isLoginPage){
+      // Use replace so the back button won't return to the protected page
+      window.location.replace('login.html');
+      return;
+    }
+  }catch(e){ /* ignore any redirect errors */ }
   const defaultProfileImage = 'https://nerospec.app/images/person/7/20230627104200424_UXdOLxWb8SDssFIY3.jpg';
   let profileImageSrc = currentUser && currentUser.avatar ? currentUser.avatar : defaultProfileImage;
   // set initial profile image (from logged-in user if present)

@@ -135,5 +135,21 @@
       "address": {"city": "Unknown", "country": "Unknown"},
       "preferences": {"newsletter": true, "timezone": "UTC"}
     }
+    ,
+    {
+      "id": "demo-account-0001",
+      "name": "Demo",
+      "username": "demo",
+      "email": "demo@example.com",
+      "password": "demo",
+      "avatar": "https://i.pravatar.cc/150?img=56",
+      "age": 0,
+      "createdAt": "2026-02-26T00:00:00Z",
+      "lastLogin": null,
+      "roles": ["user"],
+      "active": true,
+      "address": {"city": "Demo City", "country": "Demo"},
+      "preferences": {"newsletter": false, "timezone": "UTC"}
+    }
   ]
 }
