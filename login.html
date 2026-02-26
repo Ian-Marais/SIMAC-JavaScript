@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sign In</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+    .login-card{width:360px;padding:20px;border-radius:12px;background:#0f0f10;border:2px solid rgba(255,255,255,0.03)}
+    .login-card h1{margin:0 0 10px;color:#d4aa56}
+    .login-card label{display:block;margin:8px 0 4px;color:#ddd}
+    .login-card input{width:100%;padding:10px;border-radius:8px;border:2px solid rgba(255,255,255,0.06);background:transparent;color:#fff}
+    .login-card button{margin-top:12px;width:100%;padding:10px;border-radius:8px;border:0;background:#d4aa56;color:#111;font-weight:700}
+    .login-error{color:#ffb3b3;margin-top:10px}
+    .small{font-size:13px;color:#bdbdbd;margin-top:8px}
+  </style>
+</head>
+<body class="dark">
+  <div class="login-hero">
+    <div class="brand">
+      <img src="https://simac.app/header_image_simac.png" alt="SIMAC" class="brand-logo">
+    </div>
+
+    <div class="auth-panel">
+      <div class="auth-card">
+        <div class="tabs">
+          <button class="tab active" data-tab="login">Login</button>
+          <button class="tab" data-tab="register">Register</button>
+        </div>
+
+        <div class="card-body">
+          <form id="loginForm" class="form-panel" data-panel="login">
+            <label for="email">Email or Number</label>
+            <input id="email" type="email" required autocomplete="username" placeholder="Email or Number" />
+            <label for="password">Password</label>
+            <input id="password" type="password" required autocomplete="current-password" placeholder="Password" />
+            <button type="submit" class="btn-login">Login</button>
+            <div id="msg" class="login-error" role="status" aria-live="polite"></div>
+            <div class="auth-actions"><a href="#">Forgot Password</a></div>
+          </form>
+
+          <form id="registerForm" class="form-panel" data-panel="register" style="display:none">
+            <label for="r_name">Full name</label>
+            <input id="r_name" type="text" placeholder="Full name" />
+            <label for="r_email">Email</label>
+            <input id="r_email" type="email" placeholder="Email" />
+            <label for="r_password">Password</label>
+            <input id="r_password" type="password" placeholder="Password" />
+            <button type="button" class="btn-login">Register</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="login.js"></script>
+</body>
+</html>

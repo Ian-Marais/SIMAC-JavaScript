@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dashboard Mock</title>
+  <link rel="stylesheet" href="styles.css">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+</head>
+<body class="dark">
+  <aside class="sidebar">
+    <nav class="nav">
+      <ul>
+        <li>
+          <span class="icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 11.5L12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-8.5z"/></svg>
+          </span>
+          <span class="label" data-i18n="nav.home">Home</span>
+        </li>
+        <li class="expandable">
+          <span class="icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 8a6 6 0 1 0-12 0v5l-2 2v1h16v-1l-2-2V8"/></svg>
+          </span>
+          <span class="label" data-i18n="nav.alerts">Alerts</span>
+          <span class="caret" aria-hidden="true">
+            <svg class="chev" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <ul class="sub-list" aria-hidden="true">
+            <li class="sub-item"><i class="bi bi-bell"></i> <span data-i18n="nav.alerts.active">Active Alerts</span></li>
+            <li class="sub-item"><i class="bi bi-clock-history"></i> <span data-i18n="nav.alerts.history">Alerts History</span></li>
+          </ul>
+        </li>
+        <li>
+          <span class="icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M3 7h11v6h4l3 4v1H1v-1l2-4V7zM7 19a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm10 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
+            </svg>
+          </span>
+          <span class="label" data-i18n="nav.machines">Machines</span>
+        </li>
+        <li>
+          <span class="icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M3 7h11v6h4l3 4v1H1v-1l2-4V7zM7 19a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm10 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
+            </svg>
+          </span>
+          <span class="label" data-i18n="nav.machine_groups">Machine Groups</span>
+        </li>
+        <li>
+          <span class="icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M3 7h11v6h4l3 4v1H1v-1l2-4V7zM7 19a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm10 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
+            </svg>
+          </span>
+          <span class="label" data-i18n="nav.my_machine_groups">My Machines Groups</span>
+        </li>
+        <li class="expandable">
+          <span class="icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <!-- info icon without circular background: dot + stem -->
+              <circle cx="12" cy="5.5" r="1" />
+              <rect x="11" y="9" width="2" height="6" rx="0.9" />
+            </svg>
+          </span>
+          <span class="label" data-i18n="nav.machine_status">Machine Status</span>
+          <span class="caret" aria-hidden="true">
+            <svg class="chev" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+
+          <ul class="sub-list" aria-hidden="true">
+            <li class="sub-item"><i class="bi bi-info-circle"></i> <span data-i18n="nav.machine_status.status">Status</span></li>
+            <li class="sub-item"><i class="bi bi-graph-up"></i> <span data-i18n="nav.machine_status.trend">Trend</span></li>
+            <li class="sub-item"><i class="bi bi-file-earmark-text"></i> <span data-i18n="nav.machine_status.documentation">Documentation</span></li>
+          </ul>
+        </li>
+        
+        <li>
+          <span class="icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="4" width="18" height="6" rx="1"/><rect x="3" y="14" width="18" height="6" rx="1"/></svg>
+          </span>
+          <span class="label" data-i18n="nav.dashboards">Dashboards</span>
+        </li>
+        <li>
+          <span class="icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/><path d="M4 20a8 8 0 0 1 16 0"/></svg>
+          </span>
+          <span class="label" data-i18n="nav.users">Users</span>
+        </li>
+        <li>
+          <span class="icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="6" width="18" height="14" rx="1"/><path d="M8 6v-2"/></svg>
+          </span>
+          <span class="label" data-i18n="nav.organizations">Organizations</span>
+        </li>
+        <li>
+          <span class="icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6l9 4 9-4v12l-9-4-9 4V6z"/></svg>
+          </span>
+          <span class="label" data-i18n="nav.sitelayout">SiteLayout</span>
+        </li>
+        <li>
+          <span class="icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7 3h10v18H7z"/><path d="M3 7h2v10H3zM19 7h2v10h-2z"/></svg>
+          </span>
+          <span class="label" data-i18n="nav.tags">Tags</span>
+        </li>
+        <li class="expandable">
+          <span class="icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2l4 4-4 4-4-4 4-4z"/><path d="M2 20l4-4 4 4-4 4-4-4zM14 20l4-4 4 4-4 4-4-4z"/></svg>
+          </span>
+          <span class="label" data-i18n="nav.helpdesk">Helpdesk</span>
+          <span class="caret" aria-hidden="true">
+            <svg class="chev" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <ul class="sub-list" aria-hidden="true">
+            <li class="sub-item"><i class="bi bi-layout-text-window"></i> <span data-i18n="nav.helpdesk.dashboard">Dashboard</span></li>
+            <li class="sub-item"><i class="bi bi-journal-text"></i> <span data-i18n="nav.helpdesk.my_tickets">My Tickets</span></li>
+            <li class="sub-item"><i class="bi bi-pencil"></i> <span data-i18n="nav.helpdesk.new_ticket">New Ticket</span></li>
+            <li class="sub-item"><i class="bi bi-folder"></i> <span data-i18n="nav.helpdesk.tickets">Tickets</span></li>
+            <li class="sub-item"><i class="bi bi-file-earmark"></i> <span data-i18n="nav.helpdesk.templates">Templates</span></li>
+          </ul>
+        </li>
+        <li class="expandable">
+          <span class="icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/><path d="M12 8v4l3 2"/></svg>
+          </span>
+          <span class="label" data-i18n="nav.admin_portal">Admin Portal</span>
+          <span class="caret" aria-hidden="true">
+            <svg class="chev" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <ul class="sub-list" aria-hidden="true">
+            <li class="sub-item"><i class="bi bi-layout-text-window"></i> <span data-i18n="nav.admin.assign_dashboards">Assign Dashboards</span></li>
+            <li class="sub-item"><i class="bi bi-hdd-stack"></i> <span data-i18n="nav.admin.assign_devices">Assign Devices</span></li>
+            <li class="sub-item"><i class="bi bi-person-plus"></i> <span data-i18n="nav.admin.assign_users">Assign Users</span></li>
+            <li class="sub-item"><i class="bi bi-people-fill"></i> <span data-i18n="nav.admin.assign_user_devices">Assign User Devices</span></li>
+            <li class="sub-item"><i class="bi bi-arrow-up-circle"></i> <span data-i18n="nav.admin.signal_upload">Signal Upload</span></li>
+            <li class="sub-item"><i class="bi bi-geo-alt"></i> <span data-i18n="nav.admin.named_location">Named Location Config</span></li>
+            <li class="sub-item"><i class="bi bi-toggle-on"></i> <span data-i18n="nav.admin.ibuttons">IButtons</span></li>
+          </ul>
+        </li>
+        <li class="expandable">
+          <span class="icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 4h16v6H4zM4 14h16v6H4z"/></svg>
+          </span>
+          <span class="label" data-i18n="nav.developer_portal">Developer Portal</span>
+          <span class="caret" aria-hidden="true">
+            <svg class="chev" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <ul class="sub-list" aria-hidden="true">
+            <li class="sub-item"><i class="bi bi-key"></i> <span data-i18n="nav.dev.api_keys">Api Keys</span></li>
+            <li class="sub-item"><i class="bi bi-hdd-stack"></i> <span data-i18n="nav.dev.hub_server">HUB Server Config</span></li>
+            <li class="sub-item"><i class="bi bi-translate"></i> <span data-i18n="nav.dev.languages">Languages</span></li>
+            <li class="sub-item"><i class="bi bi-grid-3x3-gap"></i> <span data-i18n="nav.dev.organizations_module">Organizations Module</span></li>
+            <li class="sub-item"><i class="bi bi-shield-exclamation"></i> <span data-i18n="nav.dev.risk">Risk</span></li>
+            <li class="sub-item"><i class="bi bi-activity"></i> <span data-i18n="nav.dev.severity">Severity</span></li>
+            <li class="sub-item"><i class="bi bi-brush"></i> <span data-i18n="nav.dev.themes_api">Themes Api</span></li>
+            <li class="sub-item"><i class="bi bi-journal-text"></i> <span data-i18n="nav.dev.user_audit">User Audit Trails</span></li>
+            <li class="sub-item"><i class="bi bi-person-badge"></i> <span data-i18n="nav.dev.user_signin_logger">UserSigninLogger</span></li>
+            <li class="sub-item"><i class="bi bi-book"></i> <span data-i18n="nav.dev.developer_guide">Developer Guide</span></li>
+            <li class="sub-item"><i class="bi bi-exclamation-octagon"></i> <span data-i18n="nav.dev.device_error_code">Device Error Code</span></li>
+            <li class="sub-item"><i class="bi bi-lock"></i> <span data-i18n="nav.dev.user_permissions">User Permissions</span></li>
+            <li class="sub-item"><i class="bi bi-people"></i> <span data-i18n="nav.dev.user_types">User Types</span></li>
+            <li class="sub-item"><i class="bi bi-github"></i> <span data-i18n="nav.dev.gitea">Gitea</span></li>
+            <li class="sub-item"><i class="bi bi-heart-pulse"></i> <span data-i18n="nav.dev.server_health">Server Health</span></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div class="left">
+        <div class="header-hamburger">
+          <button class="hamburger" aria-label="menu">
+            <span class="line"></span>
+            <span class="line"></span>
+            <span class="line"></span>
+          </button>
+          <img class="simac-logo" src="https://simac.app/header_image_simac.png" alt="SIMAC logo">
+        </div>
+      </div>
+
+      <div class="right">
+        <div class="messages" title="Messages" id="messagesButton" data-i18n="header.messages">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 6.5V17a2 2 0 0 1-2 2H7l-5 3V6.5A2.5 2.5 0 0 1 4.5 4h13A2.5 2.5 0 0 1 20 6.5z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span class="badge" id="msgCount">0</span>
+        </div>
+
+        <div class="tz" id="tzDisplay">UTC+02:00</div>
+
+        <!-- Notifications panel -->
+        <div class="notifications-panel" id="notificationsPanel" aria-hidden="true">
+          <div class="notif-header">
+            <div class="title" data-i18n="header.notifications">NOTIFICATIONS:</div>
+            <div class="notif-actions">
+              <input class="notif-search" placeholder="Search" aria-label="Search notifications" data-i18n="header.search">
+              <button class="view-all" data-i18n="header.view_all">View All</button>
+            </div>
+          </div>
+
+          <div class="notif-table">
+            <div class="thead">
+              <div class="col notif-col">Notification</div>
+              <div class="col info-col">Info</div>
+              <div class="col time-col">Time stamp</div>
+            </div>
+            <div class="notif-list" id="notifList">
+              <div class="empty">No notifications</div>
+            </div>
+          </div>
+        </div>
+
+        
+
+          <div class="org-selector" tabindex="0">
+          <button class="org-btn"><span class="org-icon">GF</span><span class="org-label" data-i18n="org.label">Gold Fields - South Deep</span> <span class="org-caret">▾</span></button>
+
+          <div class="org-panel" aria-hidden="true">
+            <div class="org-panel-header">
+              <input class="org-search" placeholder="Search" aria-label="Search organizations">
+            </div>
+            <div class="org-list" role="list">
+              <!-- populated by JS -->
+            </div>
+          </div>
+        </div>
+
+        
+
+        <div class="profile" id="profileMenuWrap">
+          <div class="avatar" id="avatar">SR</div>
+          <div class="profile-name" id="profileName">Shaun Roselt ▾</div>
+          <div class="profile-menu" id="profileMenu" aria-hidden="true">
+            <label class="menu-item"><input type="checkbox" id="darkMode"> <span data-i18n="profile.dark_mode">Dark Mode</span></label>
+            <div class="menu-item language-toggle" id="languageToggle">
+              <span class="lang-label" data-i18n="profile.language">Language</span> ▸
+              <div class="language-menu" id="languageMenu" aria-hidden="true">
+                <!-- populated by JS -->
+              </div>
+            </div>
+            <div class="menu-item" data-i18n="profile.profile">Profile</div>
+            <div class="menu-item" data-i18n="profile.organization">Organization</div>
+            <div class="menu-item help-item">Help ▸
+              <div class="help-panel" aria-hidden="true">
+                <div class="help-row"><i class="bi bi-info-circle"></i><span data-i18n="profile.help.about">About</span></div>
+                <div class="help-row"><i class="bi bi-book"></i><span data-i18n="profile.help.documentation">Documentation</span></div>
+                <div class="help-row"><i class="bi bi-clock-history"></i><span data-i18n="profile.help.changelog">Change Log</span></div>
+                <div class="help-row"><i class="bi bi-telephone"></i><span data-i18n="profile.help.contact">Contact Us</span></div>
+              </div>
+            </div>
+            <div class="menu-item sign" id="authAction" data-i18n="profile.sign_out">Sign Out</div>
+          </div>
+        </div>
+
+      </div>
+    </header>
+
+    <section class="content">
+      <div class="backdrop">
+        <div class="panel">
+          <div class="panel-top">
+            <div class="title-row">
+              <div class="title-left">
+                <div class="simac-title" data-i18n="title.simac">SIMAC</div>
+                <div class="simac-subtitle" data-i18n="title.subtitle">Short Interval Monitoring and Control</div>
+              </div>
+              <div class="panel-controls">
+                <div class="fleet-selector" tabindex="0">
+                  <button class="fleet-btn" aria-haspopup="true" aria-expanded="false"><span class="fleet-label" data-i18n="fleet.button">Fleet</span> <span class="fleet-caret">▾</span></button>
+                  <ul class="fleet-menu" aria-hidden="true">
+                    <li class="fleet-item" data-fleet="all" data-fleet-name="Fleet">
+                      <div class="fleet-status"></div>
+                      <div class="fleet-icon"><!-- no icon for Fleet header --></div>
+                      <div class="fleet-name" data-i18n="fleet.all">Fleet</div>
+                    </li>
+
+                    <li class="fleet-item" data-fleet="drill" data-fleet-name="Drill">
+                      <div class="fleet-status"></div>
+                      <div class="fleet-icon" aria-hidden="true">
+                        <div style="width:30px;">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4179.13043 906.26087">
+                              <g>
+                                  <path fill="#FFFFFF" d="M982.10122,588.5175h78.18646c1.03467-12.01416.53369-23.46826.34888-34.75086-7.75427-2.17321-82.65887-2.69616-96.15857-.66882-1.63824,25.563-.71265,51.34729.67731,78.1145-13.69416.83887-26.86164,1.64551-40.89081,2.50489l-25.88867-81.54285c-11.81037.35559-23.07654-2.37451-33.85492,3.34961-2.47986,1.317-5.77069,1.404-8.707,1.50342-6.32575.21423-12.68006-.21241-18.99189.15344-5.7257.33191-10.51135-.82739-13.993-5.69263-2.9917-4.1803-7.12329-5.31775-12.18145-5.30517q-75.49512.1875-150.99073-.0055a16.64786,16.64786,0,0,0-12.49475,4.83533c-21.69726,20.70984-43.6084,41.19556-65.31183,61.89893-2.80987,2.68054-4.83593,6.18274-7.82031,10.082H482.91174c-.07209-14.41748-.17035-28.60266-.20624-42.78821-.0354-13.999-.00772-27.99841-.00772-41.99756V453.2581c-2.79-1.01172-4.876-1.76807-7.37061-2.67261V429.28581c2.79349-.6709,5.57669-1.33936,8.523-2.047a11.20445,11.20445,0,0,0,.97681-2.66015,42.522,42.522,0,0,0-4.41086-24.09058c-11.67724-23.57715-22.73361-47.46155-34.056-71.21484-1.42495-2.98951-2.99289-5.91065-4.795-9.45423H216.38238V271.49113c-3.53848-.5404-5.76781-1.165-8.00031-1.17651-16.66525-.08569-33.33273.07788-49.99577-.13306-4.8323-.061-8.06583,1.53137-10.81971,5.54688-6.5674,9.57605-13.52241,18.88611-21.65507,30.152-4.44088-17.764-8.41254-33.651-12.63725-50.55017H80.8909c-2.14872-13.69922-4.1382-26.383-6.25488-39.878H48.53475V144.75444c8.09908,0,15.69674-.20252,23.27719.07141,5.05478.18249,7.65827-1.56543,9.42194-6.59558,4.00292-11.41687,7.19144-22.7666,6.21753-35.08753-.57169-7.23217-.10431-14.54675-.10431-22.50512h28.24613q.92109,3.71192,2.03868,8.21582H1002.02c.32648-6.24439.61731-11.80774.96845-18.52466H1044.803c1.08319-3.41248,1.84809-5.82214,2.712-8.54382,3.14685-.17225,6.09314-.46314,9.04052-.47315,14.29541-.04871,28.59119-.022,43.25-.022.98841,3.73364,1.803,6.811,2.88025,10.881H1301.763v52.5376c-1.74536.78808-4.02282,1.81632-7.3186,3.30432v39.172h-31.46094c-1.73278,16.13708-.1,31.3883-1.20129,47.912-31.08655.36914-61.94092.1145-92.78857.161q-46.49725.07014-92.99463.01026H796.11874c-1.93268,19.70129.29559,38.928-1.39911,59.02636H592.50594c2.39643,7.80579,6.93885,9.39087,13.12366,9.34168,21.33069-.17,42.66364-.06262,63.99573-.06152,22.99866.00134,45.99841.123,68.99512-.08777,5.35876-.0492,9.46832,1.3092,13.26788,5.25732,8.54718,8.88074,17.56665,17.3053,26.2359,26.07178,1.77838,1.79822,4.03442,4.25305,4.084,6.45032.35235,15.57739.18762,31.16662.18762,48.00158-4.50379,0-8.06226-.00012-11.62073-.00012-30.66486.00049-61.33032-.09094-91.99408.09a69.85263,69.85263,0,0,0-15.7431,1.96509C642.64462,376.21574,622.33267,381.448,601.9844,386.53c-3.49616.87329-7.02216,1.627-11.37116,2.62854-4.27569-10.051-8.38452-19.70959-12.97076-30.4906,27.6535-4.83826,54.06122-9.4585,81.762-14.305-1.82055-7.88074-3.43359-14.86316-5.16681-22.366-3.33447-.202-6.26843-.53052-9.20275-.53455-28.99823-.03894-57.9975.09473-86.99408-.12561-5.69635-.04333-10.14588,1.28931-14.28315,5.38086-7.10281,7.02429-14.73916,13.50672-22.09195,20.28137-7.1253,6.56543-7.09231,6.6012-2.72854,17.10767,8.52441,0,17.46353-.075,26.40082.02063,9.33227.09973,18.235,8.87427,18.48828,18.14893.10907,3.99682.15753,8.00476-.01081,11.99731-.20312,4.81665.519,8.96411,4.20478,12.73743,1.771,1.81311,2.21,5.36218,2.4068,8.18408.3634,5.21069.10388,10.4646.10388,16.59241h27.212v25.97485c4.03669.41455,6.88349.96008,9.73066.96228,64.32959.04871,128.65942-.057,192.98834.14746,8.88031.0282,16.05432-4.11108,23.40332-7.75989,2.35522-1.1692,3.2843-5.21106,5.14453-8.41906h35.61182c.7641,2.39758,1.44879,4.546,2.3529,7.38318h20.88166c1.68-5.81983,3.32073-11.50354,5.326-18.45008,5.976,0,12.205.13538,18.4245-.04773,4.12726-.12146,6.134,2.60291,7.50391,5.5697,3.63794,7.87867,9.74921,9.15406,17.85364,9.12586q121.49148-.42187,242.985-.05017c7.44361.01782,13.73389-.99365,18.322-7.41138,2.73535-3.82593,6.635-5.29,11.34277-4.73657a43.06645,43.06645,0,0,0,4.99609.02771q269.98425-.00018,539.96814-.17139c7.95178-.00989,14.31946,1.34876,19.14331,7.85413,3.259,4.39465,7.71472,6.33911,13.10437,5.46545,14.11658-2.28833,25.38367,2.5083,34.04944,13.60242,8.86194,11.34534,21.15393,7.46387,32.35913,7.00659,5.5232-.22546,12.74195-11.14514,12.90064-17.158.11206-4.24939.0216-8.50427.0216-13.74988h44.052c1.03088-3.64257,1.81848-6.42492,2.81457-9.94421h28.718c.64087,3.16856,1.27844,6.32056,2.12488,10.50476,11.69128,1.18677,23.50817.44458,35.91674.42908,2.02759-10.6648,3.542-20.53113-6.53625-28.03748-2.38049-1.77307-4.11145-4.40173-6.43652-6.26916-5.61-4.50513-7.14856-10.04614-4.56739-18.13123,17.1239-.39148,34.60669-.28857,53.26087-.00378v73.96118h41.65283V428.20256h12.48486v29.99866c7.85547,2.53442,39.71851,2.896,50.45239.72839.33863-3.07666.69385-6.3075,1.14844-10.44019h19.67407c.48365,3.61878.95362,7.13709,1.49585,11.19532h77.79029V412.199c13.52173-.03357,26.04712-.07691,38.57275-.09241q18.999-.02325,37.9978-.00354h37.99781c12.64477,0,25.28955.00012,37.71118.00012,2.45044-7.4292,3.11377-106.17737.82788-119.93408h-389.125V259.852c7.71924-1.94922,518.72559-2.74841,536.63232-.90918,2.43457,6.70435,2.93775,23.88074.855,37.51416H2416.91805c-2.56054,8.77558-2.89819,166.68445-.63379,177.1864h170.32032V389.06254c3.62109-.32556,6.18628-.75608,8.75122-.757q112.4934-.05493,224.98657-.15454c6.03813-.01526,10.10327,1.605,12.84546,7.03687,1.60644,3.18164,3.88306,6.0249,6.25244,9.6184,6.9292-6.93543,13.67554-12.8368,19.35547-19.62977,4.97851-5.95405,10.5376-8.50146,18.1477-7.68322,4.25586.45752,8.60083.08227,13.43042.08227,3.38794-10.81885-.20556-21.68225,2.63208-32.67969,3.29-.15209,6.5337-.43347,9.77759-.43347q486.97156-.02983,973.94312.04859a40.44583,40.44583,0,0,1,12.7456,1.65881q66.72108,22.53607,133.301,45.4884c1.54614.52942,3.0249,1.25542,5.04394,2.10364.82935,5.55506,1.99146,11.09,2.39453,16.67945.39527,5.48278,2.73365,8.29272,8.20655,9.50781,9.68066,2.1499,19.21972,4.93738,29.43091,7.619,0,11.9895.001,23.261,0,34.53247-.00074,9.33276-.2146,18.67224.084,27.99536.14795,4.62146-1.48413,7.44678-5.55347,9.535-5.32885,2.73474-10.20044,6.43017-15.657,8.8291-8.71728,3.832-11.93091,9.93774-9.48462,20.05823q30.30139,10.24108,62.1731,21.01281c-.72827,32.07032-1.44385,63.58069-2.168,95.47144-4.32178,1.53509-8.00488,2.969-11.76465,4.16089q-81.89209,25.95557-163.83911,51.73657a67.00827,67.00827,0,0,1-18.56079,2.95385q-135.94006,2.40271-271.887,4.40113c-9.25367.14331-18.51148.01953-28.61231.01953.91968-5.83765,1.68726-11.01416,2.55518-16.17395a180.86917,180.86917,0,0,0-148.459-208.95325c-80.99463-13.71094-155.97143,28.807-188.50171,107.11951a202.68117,202.68117,0,0,0-13.20092,110.702q.38098,2.45874.657,4.93262c.03223.292-.19604.613-.67261,1.97119a67.57014,67.57014,0,0,1-7.927,0.85962q-138.49182.07177-276.98389-.01269a30.52127,30.52127,0,0,1-9.83716-1.26343c-20.432-7.09668-40.77392-14.4536-62.01855-22.03809-.92334-12.18018-1.845-24.33691-2.844-37.51343h-31.70947c-.59888-4.848-1.073-8.694-1.73291-14.03357-9.30371-.02221-18.80591-.07434-28.30737-.02026a3.764,3.764,0,0,0-2.69287,1.06848c-5.54248,7.44572-13.55591,5.83313-21.08472,5.84082-34.998.03589-69.99731.181-104.99267-.12683-6.71485-.059-11.00342,2.03418-14.968,7.45459-13.17945,18.02027-27.0315,35.54822-40.25513,53.537-3.37195,5.05005-7.62573,7.294-14.06274,7.28174q-146.99085-.28747-293.98243-.157c-2.62475-.00073-5.24951-.35278-8.9602-.61914.366-3.626.73657-6.81128,1.00268-10.00537,5.03321-60.35693-7.58691-115.49609-53.27-157.98657-52.001-48.36658-114.075-63.12427-181.66895-41.38769-66.68054,21.44238-104.90942,70.189-118.79846,138.33837a173.272,173.272,0,0,0-.54993,64.59278c.32764,1.89551.26611,3.85815.46021,7.0061h-47.09424v20.25269c-4.13782.54223-7.30676.95721-11.285,1.479v12.71c6.89881.39063,14.00928.79321,21.60462,1.22315v16.35669h-71.10559v-16.271h25.80432V730.55607c-3.917-.46191-7.76563-.916-12.16284-1.43457V716.46794c-3.75562-.54443-6.932-1.00488-10.59876-1.53662-.39514-6.04137-.777-11.87989-1.1969-18.29907h-27.50879c-.34668,4.88134-.6488,9.136-1.01867,14.344-2.90369.26611-5.73926.73437-8.57752.751-13.6654.08007-27.33154.00268-40.99719.06445-3.5264.01587-7.438-.90479-9.21765,3.89271-.39954,1.0769-2.52271,1.8396-3.97388,2.12085a31.82006,31.82006,0,0,1-5.98181.157q-104.99378.00549-209.98767.00269h-8.6698c-.61365-7.052-5.07825-8.4231-11.03638-7.76612-2.96367.32691-6.02478-.22705-8.98779.103-13.86536,1.54443-26.25183-.79175-36.39819-11.53418-2.11718-2.2417-6.52893-2.96094-9.96082-3.18311-7.2301-.46826-14.5116-.14233-22.876-.14233V645.94023H1408.586c-.47351-6.23865-.8678-11.43421-1.34778-17.75794-8.45446-1.644-16.84533-3.254-25.22692-4.91076-12.085-2.389-24.18775-4.69641-36.23475-7.265-7.07446-1.50818-13.74719-1.995-19.60009,3.427-1.40918,1.30566-3.39673,1.987-6.28943,3.61475-16.44129-18.08191-32.91895-36.20361-49.8833-54.86047-3.373,1.97937-6.39014,3.74988-9.121,5.35242.13793,1.42664-.04761,2.2992.29455,2.63685,7.99707,7.89,9.46277,17.69592,9.04163,28.37207-.41858,10.61157-.09156,21.25256-.09046,31.88073-6.90783,2.20459-274.33624,2.944-288.02728.66907ZM112.23281,167.151h22.92372V138.31743c12.59925,0,23.8592-.0553,35.11733.064,1.55868.01648,3.71278.40772,4.56076,1.45764,4.44391,5.50281,10.45428,4.97486,16.46579,4.98084a74.74212,74.74212,0,0,1,8.01629.86157v15.85767c-7.19761.51159-13.941,0.991-20.532,1.45947V192.0153c3.71234.16431,6.66722.40906,9.62213.40955q184.49121.02874,368.98246.00317c4.1604-.00061,8.61035,1.03723,10.81414-4.55029.46466-1.1781,4.10987-1.48084,6.30414-1.52966,7.99579-.1781,15.999.00341,23.99652-.12952a75.19474,75.19474,0,0,0,8.28064-1.10132V157.4506h197.913c.7185-2.20739,1.38251-3.181,1.2641-4.048-1.19513-8.75317,3.6936-15.28393,8.039-21.94812.97955-1.50207,2.85608-3.30884,4.40674-3.39416,6.54071-.36011,13.25067-1.52662,18.98852,3.57678,3.45874,3.07629,7.74213,5.20434,11.42938,8.05066,3.90821,3.01672,8.15375,3.95581,13.0318,3.94739q86.9956-.14979,173.99158-.09607c2.86627-.00208,5.73224-.46021,8.61969-.70789V118.34953H1003.0245c-.3783-5.45593-.672-9.69141-.9881-14.24988h-872.685c0,8.27234-.25122,15.5647.08355,22.83.24524,5.32214-1.23581,8.99634-6.558,10.84363a23.098,23.098,0,0,0-7.04423,3.70141c-1.59816,1.3125-3.31694,3.50281-3.43873,5.40235C111.97476,153.41606,112.23281,159.99858,112.23281,167.151ZM1795.80746,540.84733c-6.09168-.19348-12.88172-3.11279-17.28357,1.52271-5.51575,5.80823-11.66358,5.39648-18.25867,5.39636q-183.94738-.00458-367.89477-.00073a79.67379,79.67379,0,0,0-8.98719.12366c-1.85949.21228-4.15539.7716-5.33667,2.03466-5.15307,5.509-9.96948,11.333-15.98608,18.28907,17.94238,6.89034,34.46985,13.2373,51.46985,19.76574,2.0072-5.73547,3.61474-10.329,5.317-15.193,5.33118,0,10.01539-.3457,14.615.12891,2.78771.28759,6.3269,1.0747,7.99072,2.9801,4.557,5.219,10.47693,6.63159,16.69348,8.043,22.07349,5.01062,44.19665,9.83825,66.14282,15.36389,19.81177,4.9884,39.66858,7.85364,60.20752,7.13965,21.63428-.752,43.31506-.16834,64.97546-.16858,37.98914-.00025,75.97913-.12317,113.96656.12414,6.04223.03931,9.83154-1.59777,12.63269-7.14917,4.49646-8.91125,9.13257-17.86132,14.7876-26.05066C1797.75021,563.21782,1797.00643,552.6768,1795.80746,540.84733ZM2814.17465,430.08879c-38.05152,1.708-75.22828,1.44592-111.92749,5.19556-.62745,2.01953-1.17066,2.95471-1.17261,3.891q-.15747,73.45953-.19678,146.91919a41.75536,41.75536,0,0,0,.71631,5.89184,1.83941,1.83941,0,0,0,.55713.817c.21362.23083.49048.40332,1.6167,1.2998,2.74634,0,6.38281.00012,10.019.00012q42.97888,0,85.958-.00158c4.33105-.00049,8.6626-.00147,12.99341-.03626,5.9978-.04809,6.2854-3.26245,4.22949-8.96411h-39.46167V547.55082H2805.64C2809.30062,508.32414,2817.5555,470.44279,2814.17465,430.08879Z"></path>
+                              </g>
+                          </svg>
+                        </div>
+                      </div>
+                      <div class="fleet-name" data-i18n="fleet.drill">Drill</div>
+                    </li>
+
+                    <li class="fleet-item" data-fleet="dump-truck" data-fleet-name="Dump Truck">
+                      <div class="fleet-status"></div>
+                      <div class="fleet-icon" aria-hidden="true">
+                        <div style="width:30px;">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024"><g><polygon fill="#FFFFFF" points="7.16 374.726 1.627 466.011 24.679 478.661 71.705 484.453 161.146 434.661 278.25 440.193 300.38 442.037 347.406 548.998 443.302 548.998 500.816 413.453 500.816 394.089 7.16 374.726"></polygon><circle fill="#FFFFFF" cx="704.24935" cy="557.68119" r="91.59291"></circle><circle fill="#FFFFFF" cx="174.97759" cy="550.30458" r="98.96952"></circle></g></svg>
+                        </div>
+                      </div>
+                      <div class="fleet-name" data-i18n="fleet.dump_truck">Dump Truck</div>
+                    </li>
+
+                    <li class="fleet-item" data-fleet="fire-truck" data-fleet-name="Fire Truck">
+                      <div class="fleet-status"></div>
+                      <div class="fleet-icon" aria-hidden="true">
+                        <div style="width:30px;">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4096 4096"><g><path fill="#FFFFFF" d="M1598.43823,1509.36372v1137.5244H1424.56008L797.29586,1876.62173v770.26639H587.66665V1509.36372H761.54619L1388.809,2279.63011V1509.36372Z"></path><path fill="#FFFFFF" d="M2238.69379,1278.6087H2420.6973L1884.43553,2809.3913H1702.432Z"></path><path fill="#FFFFFF" d="M3179.57542,2383.63232H2610.81357L2498.686,2646.88812H2280.93142l511.88566-1137.5244h208.00441l513.51186,1137.5244H3293.32778Zm-69.87594-165.75348-214.505-497.26042L2682.3157,2217.87884Z"></path><circle fill="#FFFFFF" cx="1004.10685" cy="2449.67166" r="355.54099"></circle><circle fill="#FFFFFF" cx="3502.32103" cy="2449.67166" r="355.54099"></circle></g></svg>
+                        </div>
+                      </div>
+                      <div class="fleet-name" data-i18n="fleet.fire_truck">Fire Truck</div>
+                    </li>
+
+                    <li class="fleet-item" data-fleet="ldv" data-fleet-name="LDV">
+                      <div class="fleet-status"></div>
+                      <div class="fleet-icon" aria-hidden="true">
+                        <div style="width:30px;">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4096 4096"><g><path fill="#FFFFFF" d="M1598.43823,1509.36372v1137.5244H1424.56008L797.29586,1876.62173v770.26639H587.66665V1509.36372H761.54619L1388.809,2279.63011V1509.36372Z"></path><path fill="#FFFFFF" d="M2238.69379,1278.6087H2420.6973L1884.43553,2809.3913H1702.432Z"></path><path fill="#FFFFFF" d="M3179.57542,2383.63232H2610.81357L2498.686,2646.88812H2280.93142l511.88566-1137.5244h208.00441l513.51186,1137.5244H3293.32778Zm-69.87594-165.75348-214.505-497.26042L2682.3157,2217.87884Z"></path></g><path fill="none" stroke="#FFFFFF" stroke-miterlimit="10" stroke-width="161" d="M380.71283,1275.15217V2820.84783a328.67547,328.67547,0,0,0,164.33773,284.6413L1883.66226,3878.337a328.67548,328.67548,0,0,0,328.67548,0l1338.6117-772.84783a328.67547,328.67547,0,0,0,164.33773-284.6413V1275.15217a328.67547,328.67547,0,0,0-164.33773-284.6413L2212.33774,217.663a328.67548,328.67548,0,0,0-328.67548,0L545.05056,990.51087A328.67547,328.67547,0,0,0,380.71283,1275.15217Z"></path></svg>
+                        </div>
+                      </div>
+                      <div class="fleet-name" data-i18n="fleet.ldv">LDV</div>
+                    </li>
+
+                    <li class="fleet-item" data-fleet="pickup" data-fleet-name="Pickup Truck">
+                      <div class="fleet-status"></div>
+                      <div class="fleet-icon" aria-hidden="true">
+                        <div style="width:30px;">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4096 4096"><g><path fill="#FFFFFF" d="M1598.43823,1509.36372v1137.5244H1424.56008L797.29586,1876.62173v770.26639H587.66665V1509.36372H761.54619L1388.809,2279.63011V1509.36372Z"></path><path fill="#FFFFFF" d="M2238.69379,1278.6087H2420.6973L1884.43553,2809.3913H1702.432Z"></path><path fill="#FFFFFF" d="M3179.57542,2383.63232H2610.81357L2498.686,2646.88812H2280.93142l511.88566-1137.5244h208.00441l513.51186,1137.5244H3293.32778Zm-69.87594-165.75348-214.505-497.26042L2682.3157,2217.87884Z"></path></g><path fill="none" stroke="#FFFFFF" stroke-miterlimit="10" stroke-width="161" d="M380.71283,1275.15217V2820.84783a328.67547,328.67547,0,0,0,164.33773,284.6413L1883.66226,3878.337a328.67548,328.67548,0,0,0,328.67548,0l1338.6117-772.84783a328.67547,328.67547,0,0,0,164.33773-284.6413V1275.15217a328.67547,328.67547,0,0,0-164.33773-284.6413L2212.33774,217.663a328.67548,328.67548,0,0,0-328.67548,0L545.05056,990.51087A328.67547,328.67547,0,0,0,380.71283,1275.15217Z"></path></svg>
+                        </div>
+                      </div>
+                      <div class="fleet-name" data-i18n="fleet.pickup">Pickup Truck</div>
+                    </li>
+
+                    <li class="fleet-item" data-fleet="unknown" data-fleet-name="Unknown">
+                      <div class="fleet-status"></div>
+                      <div class="fleet-icon" aria-hidden="true">
+                        <div style="width:30px;">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4096 4096"><g><path fill="#FFFFFF" d="M1598.43823,1509.36372v1137.5244H1424.56008L797.29586,1876.62173v770.26639H587.66665V1509.36372H761.54619L1388.809,2279.63011V1509.36372Z"></path></g></svg>
+                        </div>
+                      </div>
+                      <div class="fleet-name" data-i18n="fleet.unknown">Unknown</div>
+                    </li>
+
+                    <li class="fleet-item" data-fleet="uv" data-fleet-name="UV">
+                      <div class="fleet-status"></div>
+                      <div class="fleet-icon" aria-hidden="true">
+                        <div style="width:30px;">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080"><g><path fill="#FFFFFF" d="M593.74532,616.58361c-.90943,1.788-1.67914,3.30136-2.56065,5.03443-10.61451-.6083-21.05032-2.41031-31.73715-3.19922-1.31256,1.45127-2.59829,2.84353-3.85127,4.26478-2.18168,2.47461-4.36114,4.95163-6.50491,7.459a4.1884,4.1884,0,0,1-3.62227,1.64473c-1.21145-.06964-2.4304-.006-3.646-.006q-81.27288.00076-162.54579.00044h-5.37222c-1.70884-1.53547-1.22-3.19878-1.22566-4.68763-.04334-11.46143-.02423-22.92312-.0248-34.38467-.00038-7.46738-.05724-14.93539.0309-22.40175a8.22433,8.22433,0,0,0-2.19172-6.11169q-16.39646-17.83234-32.63539-35.80889a6.3345,6.3345,0,0,0-5.49178-2.30521c-1.03726.06875-2.0831.00505-3.12507.00505q-50.79558-.00057-101.59111-.00019a19.1012,19.1012,0,0,1-2.60235-.0144c-3.01968-.41932-4.72782,1.09179-6.272,3.53508q-10.57317,16.72933-21.43239,33.27707a13.4285,13.4285,0,0,0-2.25327,7.78917c.07628,17.713.0461,35.42645.02458,53.1398-.00228,1.873.29322,3.80174-.58167,5.802-1.40035.10907-2.75243.292-4.10654.30838-25.698.31219-51.39692.56194-77.0938.94708a26.89644,26.89644,0,0,1-11.08233-2.151c-24.32106-10.1867-48.69645-20.2436-73.04982-30.35315-1.74863-.726-3.46185-1.53707-5.36759-2.3871v-9.97607c2.32183-1.618,5.26071-1.36554,8.00739-2.4133a10.31335,10.31335,0,0,0,.57127-2.37838q.043-16.93106-.01633-33.86213a11.54122,11.54122,0,0,0-.366-1.85714,19.46977,19.46977,0,0,0-3.3099-.60694c-4.51317-.0772-9.03017-.00858-13.54469-.06439-1.51256-.0187-3.0231-.24736-4.6754-.39236-.60957-3.03837-.32595-5.73593-.20454-8.69937,1.44714-.15616,2.61038-.38006,3.77576-.39006q36.98958-.00144,73.97917-.00773c2.04838-.001,4.09673-.10338,6.36465-.16459a37.92094,37.92094,0,0,0,.19826-12.25356c-2.183-.277-4.18452-.53112-6.46716-.82084-.69416-3.35627-.19884-6.60939-.3294-9.97794a6.47566,6.47566,0,0,1,1.98157-.78431q13.0221-.0735,26.04481-.01634a6.7809,6.7809,0,0,1,1.68487.53675c.09266.81213.25451,1.639.2686,2.46828.038,2.23466.013,4.47033.013,7.03324-1.63987.19047-2.952.37153-4.26981.48746-1.20013.10564-2.40646.14065-3.82234.21846-1.40837,3.93554-.65495,7.85108-.50982,11.92285a6.58215,6.58215,0,0,0,1.92675.68112q16.14849.07079,32.29737.03151a11.92669,11.92669,0,0,0,2.2406-.48778c.21168-1.91388.41529-3.75465.62983-5.69456,1.77994-1.15743,3.73684-.74189,5.58381-.7514,1.87765-.00966,3.81935-.3638,5.90672.66815.22338,1.70521.46571,3.55536.716,5.466,1.62394,1.40177,3.00229,1.11765,4.51055,1.10709,9.611-.06712,6.90722.84679,13.16028-5.19707a22.83631,22.83631,0,0,0,1.83524-1.84666,5.82356,5.82356,0,0,1,5.04164-2.11948c4.51269.106,9.02957.02929,13.54473.02907q16.15043-.00087,32.3008.00438c1.71723.0014,3.43473.06067,4.9943.09021,1.44816,2.008.9046,3.98382.9093,5.82694.04611,18.23421.022,36.46854.0374,54.70284.00152,1.86831.13024,3.73649.18519,5.20862a7.29121,7.29121,0,0,0,.78338.71629,1.08917,1.08917,0,0,0,.4883.13956c2.42716.06255,4.85457.164,7.28186.16207q38.55018-.03024,77.10036-.10413a5.184,5.184,0,0,0,1.2774-.45211,22.48079,22.48079,0,0,0,.49167-3.30979c.056-5.73024.02149-11.46133.03644-17.19208.00451-1.71669.06569-3.43323.10328-5.26318a9.74691,9.74691,0,0,1,2.1832-.585q19.01514-.04293,38.03034-.00324a7.00264,7.00264,0,0,1,1.45636.30739c1.1801,1.4025.74885,3.03044.7554,4.53583.04249,9.72477.02207,19.44986.02233,29.17481.00006,1.89935.00006,3.79869.00006,5.92765a18.95159,18.95159,0,0,0,3.0948.69692c2.0789.10379,4.16627.0456,6.25014.04563,24.65974.0007,49.31948.03091,73.9791-.03466a65.715,65.715,0,0,0,10.87418-.79289c6.814-1.16668,12.71047-4.40762,18.0887-8.7216A169.13219,169.13219,0,0,1,867.14965,506.686a158.44068,158.44068,0,0,1,48.2987-13.959c34.87163-4.19613,67.69341,2.4381,98.47,19.29783a171.6744,171.6744,0,0,1,31.41649,22.18752,16.12249,16.12249,0,0,1,4.88644,7.7391c6.00962,19.75273,12.18611,39.45461,18.29055,59.1785.50668,1.63711.88755,3.31313,1.36555,5.11723-3.494,1.7795-7.11983,2.20636-10.65954,2.77071-3.09461.49345-4.52464-.79457-4.90419-3.90883-.39875-3.27172-.61345-6.56844-1.08928-9.82789-6.85876-46.97637-39.73-84.04039-87.81535-93.2824-38.13693-7.32994-71.54241,3.06714-99.7343,29.61347-19.51409,18.375-31.533,41.16829-37.70657,67.14092-.28065,1.1808-.55081,2.36427-.85372,3.53934a10.40888,10.40888,0,0,1-.53459,1.24115,28.95907,28.95907,0,0,1-3.33284.30335q-14.843-.237-29.6847-.554c-3.12482-.06379-6.248-.215-9.37279-.274q-37.50113-.70736-75.0025-1.39836c-16.84043-.32409-33.68161-.63629-50.51867-1.09278a11.84958,11.84958,0,0,0-8.15129,2.5513c-5.2,4.05568-10.71334,7.71025-15.9018,11.77973a11.52073,11.52073,0,0,1-8.15047,2.51639c-8.67285-.37815-17.35511-.54744-26.03432-.77359C598.3548,616.53757,596.27653,616.58361,593.74532,616.58361ZM128.31515,491.51736q30.47186,0,60.94371-.0008c1.389-.00006,2.7815.04989,4.16638-.02868,5.63853-.32005,9.38985-3.92743,9.84759-9.46968.0998-1.20846.06822-2.42917.06841-3.64421q.0036-24.48163-.00318-48.96325c-.00022-1.04165-.02337-2.08323-.03265-3.12491-.03969-4.45472-3.02569-8.86011-9.07866-9.76792a28.228,28.228,0,0,0-4.16-.12951q-61.98552-.0084-123.971.00057a30.69635,30.69635,0,0,0-4.15923.13342,10.21294,10.21294,0,0,0-9.178,9.73708c-.08013,1.03627-.04125,2.08247-.04137,3.12408q-.00283,24.74212-.00015,49.48427c.00007.86809-.02765,1.73873.02687,2.60383.36718,5.82595,4.16813,9.66486,9.94043,10.00981,1.38449.08267,2.77721.03475,4.16615.03485Q97.58283,491.51865,128.31515,491.51736,...)"/></g></svg>
+                        </div>
+                      </div>
+                      <div class="fleet-name" data-i18n="fleet.uv">UV</div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="summary-pill">
+                <div class="pill-left">
+                <span class="pill-label" data-i18n="summary.pill_label">MACHINE DATA SUMMARY</span>
+                <span class="pill-meta">
+                  <span class="meta-range">| Last 90 hours (2025/11/14 - 2026/02/12)</span>
+                  <span class="meta-timespan"> | Timespan: 2160 hours</span>
+                </span>
+              </div>
+              <div class="pill-action" tabindex="0" aria-haspopup="true" aria-expanded="false">
+                <span class="pill-selected" data-i18n="pill.quarter">Quarter on Quarter</span>
+                <span class="pill-caret"> ▾</span>
+                <ul class="pill-menu" aria-hidden="true">
+                  <li data-value="day">Day on Day</li>
+                  <li data-value="week">Week on Week</li>
+                  <li data-value="fortnight">Fortnight on Fortnight</li>
+                  <li data-value="month">Month on Month</li>
+                  <li data-value="quarter">Quarter on Quarter</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- main content removed per request; summary sits at top of container -->
+
+          <!-- Hexagon feature row (Safety / Productivity / Maintenance / Monitoring) -->
+          <div class="hexagon-row" role="region" aria-label="Feature categories">
+            <div class="hex-item">
+              <div class="hex-wrap">
+                <svg class="hexagon-shape" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <polygon points="50,3 95,25 95,75 50,97 5,75 5,25" fill="#2b2f36" stroke="#d4aa56" stroke-width="3" />
+                </svg>
+                <div class="hex-icon" aria-hidden="true"><i class="bi bi-shield-check"></i></div>
+              </div>
+              <div class="hex-label" data-i18n="feature.safety">SAFETY</div>
+            </div>
+
+            <div class="hex-item">
+              <div class="hex-wrap">
+                <svg class="hexagon-shape" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <polygon points="50,3 95,25 95,75 50,97 5,75 5,25" fill="#2b2f36" stroke="#d4aa56" stroke-width="3" />
+                </svg>
+                <div class="hex-icon" aria-hidden="true"><i class="bi bi-bar-chart-line"></i></div>
+              </div>
+              <div class="hex-label" data-i18n="feature.productivity">PRODUCTIVITY</div>
+            </div>
+
+            <div class="hex-item">
+              <div class="hex-wrap">
+                <svg class="hexagon-shape" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <polygon points="50,3 95,25 95,75 50,97 5,75 5,25" fill="#2b2f36" stroke="#d4aa56" stroke-width="3" />
+                </svg>
+                <div class="hex-icon" aria-hidden="true"><i class="bi bi-gear"></i></div>
+              </div>
+              <div class="hex-label" data-i18n="feature.maintenance">MAINTENANCE</div>
+            </div>
+
+            <div class="hex-item">
+              <div class="hex-wrap">
+                <svg class="hexagon-shape" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <polygon points="50,3 95,25 95,75 50,97 5,75 5,25" fill="#2b2f36" stroke="#d4aa56" stroke-width="3" />
+                </svg>
+                <div class="hex-icon" aria-hidden="true"><i class="bi bi-bar-chart-fill"></i></div>
+              </div>
+              <div class="hex-label" data-i18n="feature.monitoring">MONITORING</div>
+            </div>
+          </div>
+
+          <!-- Data panels row under hexagons -->
+          <div class="hex-data-row" role="region" aria-label="Feature data panels">
+            <!-- Safety -->
+            <div class="hex-panel">
+              <div class="panel-title" data-i18n="panel.cps_events">CPSEvents</div>
+              <div class="panel-section">
+                <div class="progress-label" data-i18n="panel.cps_progress_label">CPS CRAWL EVENTS : <strong>5.00</strong> incidents</div>
+                <div class="progress cps-bar" data-left-percent="68" data-left-title="Engine Runtime" data-left-value="Time(Hours): 746" data-right-title="Stop time" data-right-value="Time(Hours): <strong>278</strong>">
+                  <div class="progress-fill" style="background:#0a8f11"></div>
+                  <div class="progress-fill-red" style="background:#e03232"></div>
+                </div>
+                <div class="small-meta" data-i18n="panel.cps_time">Time : <strong>35.79</strong> hours <button class="status-btn green"><i class="bi bi-arrow-down"></i></button></div>
+
+                <hr>
+
+                <div class="panel-subtitle" data-i18n="panel.sbi_events">SBI Events</div>
+                <div class="progress cps-bar" data-left-percent="86" data-left-title="Engine Runtime" data-left-value="Time(Hours): 746" data-right-title="Stop time" data-right-value="Time(Hours): <strong>278</strong>">
+                  <div class="progress-fill" style="background:#0a8f11"></div>
+                  <div class="progress-fill-red" style="background:#e03232"></div>
+                </div>
+                <div class="small-meta" data-i18n="panel.sbi_meta">SBI CRAWL EVENTS : <strong>136013.00</strong> incidents <button class="status-btn green"><i class="bi bi-arrow-down"></i></button></div>
+              </div>
+            </div>
+
+            <!-- Productivity -->
+            <div class="hex-panel">
+              <div class="panel-title" data-i18n="panel.productivity">PRODUCTIVITY</div>
+              <div class="panel-section center">
+                <canvas id="productivityChart" width="120" height="120" style="max-width:120px;max-height:120px;" aria-hidden="true"></canvas>
+              </div>
+              <div class="panel-list">
+                <div class="list-row" data-i18n="panel.productivity.working">Working Time : <span class="value">3129.33 hours</span> <button class="status-btn red"><i class="bi bi-arrow-down"></i></button></div>
+                <div class="list-row" data-i18n="panel.productivity.idle">Idle Time : <span class="value">5043.99 hours</span> <button class="status-btn green"><i class="bi bi-arrow-down"></i></button></div>
+                <div class="list-row" data-i18n="panel.productivity.offline">Offline Time : <span class="value">178053.14 hours</span> <button class="status-btn red"><i class="bi bi-arrow-down"></i></button></div>
+              </div>
+            </div>
+
+            <!-- Maintenance -->
+            <div class="hex-panel">
+              <div class="panel-title" data-i18n="panel.maintenance">MAINTENANCE</div>
+              <div class="panel-section">
+                <div class="section-heading" data-i18n="panel.maintenance.planned_heading">Planned</div>
+                <div class="mini" data-i18n="panel.maintenance.planned">Planned Maintenace : <strong>0.00</strong> machine <button class="circle-btn"><i class="bi bi-dash-lg"></i></button></div>
+                <hr>
+                <div class="section-heading" data-i18n="panel.maintenance.unplanned_heading">Unplanned</div>
+                <div class="mini" data-i18n="panel.maintenance.unplanned">Unplanned Maintenace : <strong>0.00</strong> machine <button class="circle-btn"><i class="bi bi-dash-lg"></i></button></div>
+              </div>
+            </div>
+
+            <!-- Monitoring -->
+            <div class="hex-panel">
+              <div class="panel-title" data-i18n="panel.monitoring">MONITORING</div>
+              <div class="panel-section center">
+                <canvas id="monitoringChart" width="120" height="120" style="max-width:120px;max-height:120px;" aria-hidden="true"></canvas>
+              </div>
+              <div class="panel-footer">
+                <div class="monitor-count" data-i18n="panel.monitoring.count"><span class="big">57</span><span class="sep">/</span><span class="big">86</span></div>
+                <button class="status-btn red large" data-i18n="panel.monitoring.button"><i class="bi bi-arrow-down"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
