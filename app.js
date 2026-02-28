@@ -590,28 +590,6 @@ document.addEventListener('DOMContentLoaded',()=>{
 
     document.querySelectorAll('body *:not([data-i18n])').forEach(el=>{
       if(SKIP.has(el.tagName)) return;
-
-      // try matching by textContent first
-      const txt = (el.textContent || '').trim();
-      if(txt){
-        const key = reverse[txt] || reverse[txt.replace(/\s+/g,' ')];
-        if(key && dict[key]){
-          const out = dict[key];
-          if(/<[^>]+>/.test(out)) el.innerHTML = out; else el.textContent = out;
-          return;
-        }
-      }
-      // try matching by innerHTML normalized (useful for simple markup)
-      const html = (el.innerHTML || '').trim();
-      if(html){
-        const norm = html.replace(/\s+/g,' ');
-        const key2 = reverse[html] || reverse[norm];
-        if(key2 && dict[key2]){
-          const out = dict[key2];
-          if(/<[^>]+>/.test(out)) el.innerHTML = out; else el.textContent = out;
-          return;
-        }
-      }
       // placeholders and titles
       if(el.hasAttribute('placeholder')){
         const ph = (el.getAttribute('placeholder')||'').trim();
