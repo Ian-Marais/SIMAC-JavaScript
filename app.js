@@ -403,14 +403,8 @@ document.addEventListener('DOMContentLoaded',()=>{
   const languageMenu = document.getElementById('languageMenu');
   const languages = [
     {code:'af', name:'Afrikaans', flag:'https://simac.app/images/flags/af.png'},
-    {code:'ar', name:'Arabic', flag:'https://simac.app/images/flags/unknown.png'},
     {code:'en', name:'English', flag:'https://simac.app/images/flags/en.png'},
     {code:'fr', name:'French', flag:'https://simac.app/images/flags/fr.png'},
-    {code:'de', name:'German', flag:'https://simac.app/images/flags/de.png'},
-    {code:'it', name:'Italian', flag:'https://simac.app/images/flags/it.png'},
-    {code:'tlh', name:'Klingon', flag:'https://simac.app/images/flags/kl.png'},
-    {code:'mn', name:'Mongolian', flag:'https://simac.app/images/flags/mn.png'},
-    {code:'ru', name:'Russian', flag:'https://simac.app/images/flags/ru.png'},
     {code:'es', name:'Spanish', flag:'https://simac.app/images/flags/es.png'}
   ];
   const supportedLangCodes = languages.map(l=>l.code);
@@ -443,6 +437,12 @@ document.addEventListener('DOMContentLoaded',()=>{
     return (summaryLabels[safeLang] && summaryLabels[safeLang][period]) || summaryLabels.en[period] || 'Quarter on Quarter';
   }
 
+  function template(value, vars){
+    return String(value || '').replace(/\{\{\s*(\w+)\s*\}\}/g, (_, k)=>{
+      return Object.prototype.hasOwnProperty.call(vars, k) ? String(vars[k]) : '';
+    });
+  }
+
   function updateSummaryPeriod(period, save=true){
     const safePeriod = summaryRanges[period] ? period : 'week';
     const cfg = summaryRanges[safePeriod];
@@ -454,8 +454,14 @@ document.addEventListener('DOMContentLoaded',()=>{
     const timespanEl = document.querySelector('.meta-timespan');
     const selectedEl = document.querySelector('.pill-selected');
 
-    if(rangeEl) rangeEl.textContent = `| Last ${cfg.days} days (${formatDate(start)} - ${formatDate(end)})`;
-    if(timespanEl) timespanEl.textContent = ` | Timespan: ${cfg.hours} hours`;
+    if(rangeEl){
+      const label = t('summary.last_days', 'Last {{days}} days');
+      rangeEl.textContent = `| ${template(label, { days: cfg.days })} (${formatDate(start)} - ${formatDate(end)})`;
+    }
+    if(timespanEl){
+      const label = t('summary.timespan_hours', 'Timespan: {{hours}} hours');
+      timespanEl.textContent = ` | ${template(label, { hours: cfg.hours })}`;
+    }
     if(selectedEl){
       selectedEl.textContent = getSummaryLabel(safePeriod, activeLanguage);
       selectedEl.dataset.period = safePeriod;
@@ -512,14 +518,13 @@ document.addEventListener('DOMContentLoaded',()=>{
       languageToggle.classList.remove('open');
       if(languageMenu) languageMenu.setAttribute('aria-hidden','true');
     }
-    // load both the requested language and the English source so we can
-    // translate elements without `data-i18n` by matching English strings.
-    Promise.all([loadTranslations(safeCode), loadTranslations('en')]).then(([dict,enDict])=>{
-      if(dict) applyTranslations(dict, enDict);
+    Promise.all([loadTranslations('en'), loadTranslations(safeCode)]).then(([enDict, dict])=>{
+      const mergedDict = Object.assign({}, enDict || {}, dict || {});
+      applyTranslations(mergedDict, enDict || mergedDict);
       const selectedPeriod = (document.querySelector('.pill-selected') || {}).dataset?.period || localStorage.getItem('selectedPeriod') || 'week';
       updateSummaryPeriod(selectedPeriod, false);
     }).catch(err=>{
-      console.warn('Translation load partially failed for', safeCode, err);
+      console.warn('Translation load failed for', safeCode, err);
       loadTranslations('en').then(dict=>{ if(dict) applyTranslations(dict, dict); }).catch(()=>{});
     });
   }
@@ -539,12 +544,18 @@ document.addEventListener('DOMContentLoaded',()=>{
   function applyTranslations(dict, enDict){
     if(!dict) return;
     activeDictionary = dict;
+    document.documentElement.setAttribute('lang', activeLanguage || 'en');
     // Primary: translate annotated elements using data-i18n
     document.querySelectorAll('[data-i18n]').forEach(el=>{
       const key = el.getAttribute('data-i18n');
       if(key === 'org.label') return;
       const val = dict[key];
       if(typeof val === 'undefined') return;
+      const attrList = (el.getAttribute('data-i18n-attr') || '').split(',').map(s=>s.trim()).filter(Boolean);
+      if(attrList.length){
+        attrList.forEach(attr=>el.setAttribute(attr, val));
+        return;
+      }
       const tag = el.tagName.toLowerCase();
       if(tag === 'input' || tag === 'textarea'){
         el.setAttribute('placeholder', val);
@@ -559,54 +570,55 @@ document.addEventListener('DOMContentLoaded',()=>{
 
     // Secondary: translate non-annotated elements by matching English source strings
     const en = enDict || translationsCache['en'];
-    if(!en) return;
-    const reverse = Object.create(null);
-    Object.keys(en).forEach(k=>{
-      const v = en[k];
-      if(typeof v !== 'string') return;
-      const txt = v.trim();
-      reverse[txt] = k;
-      // also store a normalized version collapsing whitespace for innerHTML comparisons
-      reverse[txt.replace(/\s+/g,' ')] = k;
-    });
+    if(en){
+      const reverse = Object.create(null);
+      Object.keys(en).forEach(k=>{
+        const v = en[k];
+        if(typeof v !== 'string') return;
+        const txt = v.trim();
+        reverse[txt] = k;
+        reverse[txt.replace(/\s+/g,' ')] = k;
+      });
 
-    const SKIP = new Set(['SCRIPT','STYLE','IMG','SVG','PATH','BR','HR','INPUT','TEXTAREA','SELECT','BUTTON']);
+      const SKIP = new Set(['SCRIPT','STYLE','IMG','SVG','PATH','BR','HR','INPUT','TEXTAREA','SELECT','BUTTON']);
 
-    // translate text nodes across the page (including nested structures)
-    const bodyWalker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
-    const textUpdates = [];
-    while(bodyWalker.nextNode()){
-      const node = bodyWalker.currentNode;
-      const parentTag = node.parentElement ? node.parentElement.tagName : '';
-      if(SKIP.has(parentTag)) continue;
-      if(node.parentElement && node.parentElement.closest('[data-i18n]')) continue;
-      const raw = node.nodeValue || '';
-      const txt = raw.trim();
-      if(!txt) continue;
-      const key = reverse[txt] || reverse[txt.replace(/\s+/g,' ')];
-      if(key && dict[key]) textUpdates.push({ node, value: dict[key] });
+      const bodyWalker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
+      const textUpdates = [];
+      while(bodyWalker.nextNode()){
+        const node = bodyWalker.currentNode;
+        const parentTag = node.parentElement ? node.parentElement.tagName : '';
+        if(SKIP.has(parentTag)) continue;
+        if(node.parentElement && node.parentElement.closest('[data-i18n]')) continue;
+        const raw = node.nodeValue || '';
+        const txt = raw.trim();
+        if(!txt) continue;
+        const key = reverse[txt] || reverse[txt.replace(/\s+/g,' ')];
+        if(key && dict[key]) textUpdates.push({ node, value: dict[key] });
+      }
+      textUpdates.forEach(u=>{ u.node.nodeValue = u.value; });
+
+      document.querySelectorAll('body *:not([data-i18n])').forEach(el=>{
+        if(SKIP.has(el.tagName)) return;
+        if(el.hasAttribute('placeholder')){
+          const ph = (el.getAttribute('placeholder')||'').trim();
+          const phKey = reverse[ph] || reverse[ph.replace(/\s+/g,' ')];
+          if(phKey && dict[phKey]) el.setAttribute('placeholder', dict[phKey]);
+        }
+        if(el.hasAttribute('title')){
+          const t = (el.getAttribute('title')||'').trim();
+          const tKey = reverse[t] || reverse[t.replace(/\s+/g,' ')];
+          if(tKey && dict[tKey]) el.setAttribute('title', dict[tKey]);
+        }
+        if(el.hasAttribute('aria-label')){
+          const a = (el.getAttribute('aria-label')||'').trim();
+          const aKey = reverse[a] || reverse[a.replace(/\s+/g,' ')];
+          if(aKey && dict[aKey]) el.setAttribute('aria-label', dict[aKey]);
+        }
+      });
     }
-    textUpdates.forEach(u=>{ u.node.nodeValue = u.value; });
 
-    document.querySelectorAll('body *:not([data-i18n])').forEach(el=>{
-      if(SKIP.has(el.tagName)) return;
-      // placeholders and titles
-      if(el.hasAttribute('placeholder')){
-        const ph = (el.getAttribute('placeholder')||'').trim();
-        const phKey = reverse[ph] || reverse[ph.replace(/\s+/g,' ')];
-        if(phKey && dict[phKey]) el.setAttribute('placeholder', dict[phKey]);
-      }
-      if(el.hasAttribute('title')){
-        const t = (el.getAttribute('title')||'').trim();
-        const tKey = reverse[t] || reverse[t.replace(/\s+/g,' ')];
-        if(tKey && dict[tKey]) el.setAttribute('title', dict[tKey]);
-      }
-      if(el.hasAttribute('aria-label')){
-        const a = (el.getAttribute('aria-label')||'').trim();
-        const aKey = reverse[a] || reverse[a.replace(/\s+/g,' ')];
-        if(aKey && dict[aKey]) el.setAttribute('aria-label', dict[aKey]);
-      }
-    });
+    const appTitle = t('app.title', document.title || 'SIMAC');
+    document.title = appTitle;
 
     if(profileName && !signedIn){
       profileName.textContent = `${t('profile.not_signed_in', 'Not signed in')} ▾`;

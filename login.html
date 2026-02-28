@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Sign In</title>
+  <title data-i18n="login.page_title">Sign In</title>
   <link rel="stylesheet" href="styles.css">
   <style>
     .login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
@@ -25,29 +25,29 @@
     <div class="auth-panel">
       <div class="auth-card">
         <div class="tabs">
-          <button class="tab active" data-tab="login">Login</button>
-          <button class="tab" data-tab="register">Register</button>
+          <button class="tab active" data-tab="login" data-i18n="login.tab_login">Login</button>
+          <button class="tab" data-tab="register" data-i18n="login.tab_register">Register</button>
         </div>
 
         <div class="card-body">
           <form id="loginForm" class="form-panel" data-panel="login">
-            <label for="email">Email or Username</label>
-            <input id="email" type="text" required autocomplete="username" placeholder="Email or Username" />
-            <label for="password">Password</label>
-            <input id="password" type="password" required autocomplete="current-password" placeholder="Password" />
-            <button type="submit" class="btn-login">Login</button>
+            <label for="email" data-i18n="login.email_or_username">Email or Username</label>
+            <input id="email" type="text" required autocomplete="username" placeholder="Email or Username" data-i18n="login.email_or_username" />
+            <label for="password" data-i18n="login.password">Password</label>
+            <input id="password" type="password" required autocomplete="current-password" placeholder="Password" data-i18n="login.password" />
+            <button type="submit" class="btn-login" data-i18n="login.tab_login">Login</button>
             <div id="msg" class="login-error" role="status" aria-live="polite"></div>
-            <div class="auth-actions"><a href="#">Forgot Password</a></div>
+            <div class="auth-actions"><a href="#" data-i18n="login.forgot_password">Forgot Password</a></div>
           </form>
 
           <form id="registerForm" class="form-panel" data-panel="register" style="display:none">
-            <label for="r_name">Full name</label>
-            <input id="r_name" type="text" placeholder="Full name" />
-            <label for="r_email">Email</label>
-            <input id="r_email" type="email" placeholder="Email" />
-            <label for="r_password">Password</label>
-            <input id="r_password" type="password" placeholder="Password" />
-            <button type="button" class="btn-login">Register</button>
+            <label for="r_name" data-i18n="login.full_name">Full name</label>
+            <input id="r_name" type="text" placeholder="Full name" data-i18n="login.full_name" />
+            <label for="r_email" data-i18n="login.email">Email</label>
+            <input id="r_email" type="email" placeholder="Email" data-i18n="login.email" />
+            <label for="r_password" data-i18n="login.password">Password</label>
+            <input id="r_password" type="password" placeholder="Password" data-i18n="login.password" />
+            <button type="button" class="btn-login" data-i18n="login.tab_register">Register</button>
           </form>
         </div>
       </div>

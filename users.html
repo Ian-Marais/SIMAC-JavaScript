@@ -5,138 +5,237 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>SIMAC · Users</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </head>
-<body class="users-page">
-  <main class="users-shell">
-    <header class="users-hero">
-      <div>
-        <p class="secondary" style="text-transform:uppercase;letter-spacing:0.2em;font-size:0.75rem;color:rgba(255,255,255,0.6);margin:0 0 8px">User directory</p>
-        <h1>Users</h1>
-        <p>Browse every account that is registered within the SIMAC platform. Filter by activity state, search by name, and review the last login history before taking action.</p>
-      </div>
-      <div class="users-hero-meta">
-        <span class="secondary" style="font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.65)">Profiles</span>
-        <strong id="usersCount">0</strong>
-        <span style="font-size:0.85rem;color:rgba(255,255,255,0.65)">shown</span>
-      </div>
-    </header>
+<body class="dark users-page">
+  <div id="sharedSidebar"></div>
 
-    <section class="users-table-panel" aria-labelledby="users-heading">
-      <div class="users-table-header">
-        <h2 id="users-heading" class="sr-only">Users table</h2>
-        <label for="userSearch" class="sr-only">Search users</label>
-        <input id="userSearch" type="search" placeholder="Search by name, username or email" autocomplete="off">
-        <label for="statusFilter" class="sr-only">Filter by status</label>
-        <select id="statusFilter" aria-label="Filter users by account status">
-          <option value="">All statuses</option>
-          <option value="active">Active only</option>
-          <option value="inactive">Inactive only</option>
-        </select>
-      </div>
+  <div class="main">
+    <div id="sharedTopbar"></div>
 
-      <div class="users-table-wrapper">
-        <table class="users-table" aria-describedby="usersSummary">
-          <caption id="usersSummary">Showing <span id="usersSummaryCount">0</span> users</caption>
-          <thead>
-            <tr>
-              <th scope="col">User</th>
-              <th scope="col">Email</th>
-              <th scope="col">Roles</th>
-              <th scope="col">Location</th>
-              <th scope="col">Status</th>
-              <th scope="col">Last login</th>
-              <th scope="col">Joined</th>
-            </tr>
-          </thead>
-          <tbody id="usersTableBody">
-            <tr class="empty-row"><td colspan="7">Loading users…</td></tr>
-          </tbody>
-        </table>
-      </div>
+    <section class="content users-content">
+      <main class="users-shell">
+        <div class="users-breadcrumb">Home <span>›</span> Users</div>
+
+        <div class="users-head-row">
+          <h1 class="users-heading">Users</h1>
+          <div class="users-head-actions">
+            <button type="button" class="users-gold-btn">Assign Users</button>
+            <button type="button" class="users-gold-btn">Create New User</button>
+          </div>
+        </div>
+
+        <section class="users-table-panel" aria-labelledby="users-heading">
+          <label for="userSearch" class="sr-only">Search users</label>
+          <input id="userSearch" class="users-search" type="search" placeholder="Search" autocomplete="off">
+
+          <div class="users-table-wrapper">
+            <table class="users-table" aria-describedby="usersSummary">
+              <caption id="usersSummary" class="sr-only">Users list</caption>
+              <thead>
+                <tr>
+                  <th scope="col" class="users-col-expander"></th>
+                  <th scope="col">First Name <span class="users-sort-arrow">↑</span></th>
+                  <th scope="col">Last Name</th>
+                  <th scope="col">Email Address</th>
+                  <th scope="col">Mobile Number</th>
+                  <th scope="col">User Type</th>
+                  <th scope="col">Last Login</th>
+                  <th scope="col">View</th>
+                </tr>
+              </thead>
+              <tbody id="usersTableBody">
+                <tr class="empty-row"><td colspan="8">Loading users…</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="users-table-footer">
+            <div class="users-pagination">
+              <span>Rows per page:</span>
+              <button type="button" class="users-page-dd" id="usersPerPage">10 <i class="bi bi-chevron-down"></i></button>
+              <span id="usersRange">1-0 of 0</span>
+              <button type="button" class="users-page-nav" aria-label="Previous page"><i class="bi bi-chevron-left"></i></button>
+              <button type="button" class="users-page-nav" aria-label="Next page"><i class="bi bi-chevron-right"></i></button>
+            </div>
+            <button type="button" class="users-gold-btn users-download" id="downloadCsvBtn">Download List (*.csv)</button>
+          </div>
+        </section>
+      </main>
     </section>
-  </main>
+  </div>
+
+  <script src="shared-layout.js"></script>
+  <script src="app.js"></script>
 
   <script>
     (function(){
       const tableBody = document.getElementById('usersTableBody');
-      const totalCountEl = document.getElementById('usersCount');
-      const summaryCountEl = document.getElementById('usersSummaryCount');
       const searchInput = document.getElementById('userSearch');
-      const statusFilter = document.getElementById('statusFilter');
+      const rangeEl = document.getElementById('usersRange');
+      const downloadCsvBtn = document.getElementById('downloadCsvBtn');
+      const perPage = 10;
       let users = [];
 
-      const formatDate = (value) => {
-        if(!value) return '—';
-        const parsed = new Date(value);
-        if(Number.isNaN(parsed.getTime())) return value;
-        return parsed.toLocaleString('en-GB',{dateStyle:'medium',timeStyle:'short'});
-      };
+      function splitName(fullName){
+        const parts = String(fullName || '').trim().split(/\s+/).filter(Boolean);
+        return {
+          first: parts[0] || 'Unknown',
+          last: parts.slice(1).join(' ') || '—'
+        };
+      }
 
-      const renderRows = (list) => {
-        summaryCountEl.textContent = list.length;
-        totalCountEl.textContent = list.length;
-        if(list.length === 0){
-          tableBody.innerHTML = '<tr class="empty-row"><td colspan="7">No users match that search.</td></tr>';
+      function titleize(value){
+        return String(value || '').replace(/[_-]/g, ' ').replace(/\b\w/g, (char)=>char.toUpperCase());
+      }
+
+      function getUserType(user){
+        const role = Array.isArray(user.roles) && user.roles.length ? user.roles[0] : '';
+        const roleMap = {
+          admin: 'Company Administrator',
+          developer: 'Developer',
+          support: 'Staff Member',
+          user: 'Staff Member',
+          contributor: 'Staff Member',
+          editor: 'Staff Member',
+          tester: 'Staff Member',
+          moderator: 'Super User',
+          analyst: 'Super User'
+        };
+        return roleMap[role] || titleize(role || 'Staff Member');
+      }
+
+      function formatDateCompact(value){
+        if(!value) return { text: '—', recent: false };
+        const date = new Date(value);
+        if(Number.isNaN(date.getTime())) return { text: String(value), recent: false };
+        const yyyy = date.getFullYear();
+        const mm = String(date.getMonth() + 1).padStart(2, '0');
+        const dd = String(date.getDate()).padStart(2, '0');
+        const hh = String(date.getHours()).padStart(2, '0');
+        const min = String(date.getMinutes()).padStart(2, '0');
+        const now = new Date();
+        const daysAgo = (now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24);
+        return { text: `${yyyy}-${mm}-${dd} ${hh}:${min}`, recent: daysAgo <= 30 };
+      }
+
+      function phoneFallback(seed){
+        const base = String(seed || '1234567890').replace(/\D/g, '') || '1234567890';
+        return base.padEnd(10, '7').slice(0, 10);
+      }
+
+      function getAvatarMarkup(user, firstName){
+        if(user.avatar){
+          return `<img class="avatar" src="${user.avatar}" alt="${firstName}">`;
+        }
+        return '<span class="avatar avatar-fallback"><i class="bi bi-person-fill"></i></span>';
+      }
+
+      function rowMarkup(user){
+        const names = splitName(user.name || user.username || 'Unknown');
+        const email = user.email || '—';
+        const mobile = user.mobile || phoneFallback(user.id || user.username);
+        const userType = getUserType(user);
+        const login = formatDateCompact(user.lastLogin);
+
+        return `
+          <tr>
+            <td class="users-col-expander"><button type="button" class="users-expand-btn" aria-label="Expand user"><i class="bi bi-chevron-down"></i></button></td>
+            <td class="users-col-first">${getAvatarMarkup(user, names.first)}<span>${names.first}</span></td>
+            <td>${names.last}</td>
+            <td class="users-col-email">${email}</td>
+            <td>${mobile}</td>
+            <td>${userType}</td>
+            <td><span class="users-login-time ${login.recent ? 'ok' : 'late'}">${login.text}</span></td>
+            <td>
+              <div class="users-actions">
+                <button type="button" class="users-action-btn" aria-label="View user"><i class="bi bi-eye-fill"></i></button>
+                <button type="button" class="users-action-btn" aria-label="Delete user"><i class="bi bi-trash-fill"></i></button>
+                <button type="button" class="users-action-btn" aria-label="Assign user"><i class="bi bi-person-plus-fill"></i></button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }
+
+      function renderRows(list){
+        const shown = list.slice(0, perPage);
+        if(!shown.length){
+          tableBody.innerHTML = '<tr class="empty-row"><td colspan="8">No users match your search.</td></tr>';
+          rangeEl.textContent = '1-0 of 0';
           return;
         }
+        tableBody.innerHTML = shown.map(rowMarkup).join('');
+        rangeEl.textContent = `1-${shown.length} of ${list.length}`;
+      }
 
-        tableBody.innerHTML = list.map(user => {
-          const location = user.address ? [user.address.city, user.address.country].filter(Boolean).join(', ') : '—';
-          const roles = (user.roles || []).join(', ') || '—';
-          const statusClass = user.active ? 'active' : 'inactive';
-          const lastLogin = formatDate(user.lastLogin);
-          const joined = formatDate(user.createdAt);
-          const avatar = user.avatar || 'https://simac.app/web/images/person-blank.png';
-          return `
-            <tr>
-              <td>
-                <img class="avatar" src="${avatar}" alt="${user.name || 'avatar'}">
-                <div>
-                  <span class="label-name">${user.name || user.username || 'Unknown user'}</span>
-                  <span class="secondary">@${user.username || 'unknown'}</span>
-                </div>
-              </td>
-              <td>${user.email || '—'}</td>
-              <td>${roles}</td>
-              <td>${location}</td>
-              <td><span class="status-pill ${statusClass}">${user.active ? 'Active' : 'Inactive'}</span></td>
-              <td>${lastLogin}</td>
-              <td>${joined}</td>
-            </tr>
-          `;
-        }).join('');
-      };
-
-      const applyFilters = () => {
-        const text = (searchInput.value || '').trim().toLowerCase();
-        const status = statusFilter.value;
-        const filtered = users.filter(user => {
-          const haystack = [user.name, user.username, user.email].join(' ').toLowerCase();
-          const statusMatch = !status || (status === 'active' ? user.active : !user.active);
-          return statusMatch && haystack.includes(text);
+      function filteredUsers(){
+        const query = String(searchInput.value || '').toLowerCase().trim();
+        if(!query) return users;
+        return users.filter((user)=>{
+          const names = splitName(user.name || user.username || '');
+          const haystack = [names.first, names.last, user.email, user.username].join(' ').toLowerCase();
+          return haystack.includes(query);
         });
-        renderRows(filtered);
-      };
+      }
 
-      const init = () => {
+      function applySearch(){
+        renderRows(filteredUsers());
+      }
+
+      function toCsv(data){
+        const columns = ['first_name','last_name','email','mobile_number','user_type','last_login'];
+        const rows = data.map((user)=>{
+          const names = splitName(user.name || user.username || 'Unknown');
+          const login = formatDateCompact(user.lastLogin).text;
+          return [
+            names.first,
+            names.last,
+            user.email || '',
+            user.mobile || phoneFallback(user.id || user.username),
+            getUserType(user),
+            login
+          ];
+        });
+        const out = [columns, ...rows]
+          .map((line)=>line.map((item)=>`"${String(item).replace(/"/g, '""')}"`).join(','))
+          .join('\n');
+        return out;
+      }
+
+      function downloadCsv(){
+        const current = filteredUsers();
+        const blob = new Blob([toCsv(current)], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const anchor = document.createElement('a');
+        anchor.href = url;
+        anchor.download = 'users-list.csv';
+        document.body.appendChild(anchor);
+        anchor.click();
+        anchor.remove();
+        URL.revokeObjectURL(url);
+      }
+
+      function init(){
         fetch('user.json')
-          .then(res => res.json())
-          .then(data => {
+          .then((res)=>res.json())
+          .then((data)=>{
             users = Array.isArray(data.users) ? data.users : [];
+            users = users.sort((a,b)=>{
+              const aFirst = splitName(a.name || a.username).first.toLowerCase();
+              const bFirst = splitName(b.name || b.username).first.toLowerCase();
+              return aFirst.localeCompare(bFirst);
+            });
             renderRows(users);
           })
-          .catch(() => {
-            tableBody.innerHTML = '<tr class="empty-row"><td colspan="7">Unable to load users.</td></tr>';
+          .catch(()=>{
+            tableBody.innerHTML = '<tr class="empty-row"><td colspan="8">Unable to load users.</td></tr>';
+            rangeEl.textContent = '1-0 of 0';
           });
-      };
-
-      if(searchInput){
-        searchInput.addEventListener('input', applyFilters);
-      }
-      if(statusFilter){
-        statusFilter.addEventListener('change', applyFilters);
       }
 
+      searchInput.addEventListener('input', applySearch);
+      downloadCsvBtn.addEventListener('click', downloadCsv);
       init();
     })();
   </script>

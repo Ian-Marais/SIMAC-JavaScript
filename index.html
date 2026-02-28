@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Dashboard Mock</title>
+  <title data-i18n="app.title">Dashboard Mock</title>
   <link rel="stylesheet" href="styles.css">
   <!-- Bootstrap Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
@@ -14,13 +14,13 @@
       <ul>
         <li>
           <span class="icon">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 11.5L12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-8.5z"/></svg>
+            <i class="bi bi-house" aria-hidden="true"></i>
           </span>
           <span class="label" data-i18n="nav.home">Home</span>
         </li>
         <li class="expandable">
           <span class="icon">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 8a6 6 0 1 0-12 0v5l-2 2v1h16v-1l-2-2V8"/></svg>
+            <i class="bi bi-bell" aria-hidden="true"></i>
           </span>
           <span class="label" data-i18n="nav.alerts">Alerts</span>
           <span class="caret" aria-hidden="true">
@@ -33,35 +33,25 @@
         </li>
         <li>
           <span class="icon">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path d="M3 7h11v6h4l3 4v1H1v-1l2-4V7zM7 19a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm10 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
-            </svg>
+            <i class="bi bi-truck" aria-hidden="true"></i>
           </span>
           <span class="label" data-i18n="nav.machines">Machines</span>
         </li>
         <li>
           <span class="icon">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path d="M3 7h11v6h4l3 4v1H1v-1l2-4V7zM7 19a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm10 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
-            </svg>
+            <i class="bi bi-grid" aria-hidden="true"></i>
           </span>
           <span class="label" data-i18n="nav.machine_groups">Machine Groups</span>
         </li>
         <li>
           <span class="icon">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path d="M3 7h11v6h4l3 4v1H1v-1l2-4V7zM7 19a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm10 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
-            </svg>
+            <i class="bi bi-diagram-3" aria-hidden="true"></i>
           </span>
           <span class="label" data-i18n="nav.my_machine_groups">My Machines Groups</span>
         </li>
         <li class="expandable">
           <span class="icon">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <!-- info icon without circular background: dot + stem -->
-              <circle cx="12" cy="5.5" r="1" />
-              <rect x="11" y="9" width="2" height="6" rx="0.9" />
-            </svg>
+            <i class="bi bi-clipboard-check" aria-hidden="true"></i>
           </span>
           <span class="label" data-i18n="nav.machine_status">Machine Status</span>
           <span class="caret" aria-hidden="true">
@@ -77,39 +67,39 @@
         
         <li>
           <span class="icon">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="4" width="18" height="6" rx="1"/><rect x="3" y="14" width="18" height="6" rx="1"/></svg>
+            <i class="bi bi-layout-sidebar" aria-hidden="true"></i>
           </span>
           <span class="label" data-i18n="nav.dashboards">Dashboards</span>
         </li>
         <li>
           <a href="users.html" class="nav-link">
             <span class="icon">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/><path d="M4 20a8 8 0 0 1 16 0"/></svg>
+              <i class="bi bi-people" aria-hidden="true"></i>
             </span>
             <span class="label" data-i18n="nav.users">Users</span>
           </a>
         </li>
         <li>
           <span class="icon">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="6" width="18" height="14" rx="1"/><path d="M8 6v-2"/></svg>
+            <i class="bi bi-building" aria-hidden="true"></i>
           </span>
           <span class="label" data-i18n="nav.organizations">Organizations</span>
         </li>
         <li>
           <span class="icon">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6l9 4 9-4v12l-9-4-9 4V6z"/></svg>
+            <i class="bi bi-map" aria-hidden="true"></i>
           </span>
           <span class="label" data-i18n="nav.sitelayout">SiteLayout</span>
         </li>
         <li>
           <span class="icon">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7 3h10v18H7z"/><path d="M3 7h2v10H3zM19 7h2v10h-2z"/></svg>
+            <i class="bi bi-tags" aria-hidden="true"></i>
           </span>
           <span class="label" data-i18n="nav.tags">Tags</span>
         </li>
         <li class="expandable">
           <span class="icon">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2l4 4-4 4-4-4 4-4z"/><path d="M2 20l4-4 4 4-4 4-4-4zM14 20l4-4 4 4-4 4-4-4z"/></svg>
+            <i class="bi bi-bug-fill" aria-hidden="true"></i>
           </span>
           <span class="label" data-i18n="nav.helpdesk">Helpdesk</span>
           <span class="caret" aria-hidden="true">
@@ -125,7 +115,7 @@
         </li>
         <li class="expandable">
           <span class="icon">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/><path d="M12 8v4l3 2"/></svg>
+            <i class="bi bi-shield-lock" aria-hidden="true"></i>
           </span>
           <span class="label" data-i18n="nav.admin_portal">Admin Portal</span>
           <span class="caret" aria-hidden="true">
@@ -143,7 +133,7 @@
         </li>
         <li class="expandable">
           <span class="icon">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 4h16v6H4zM4 14h16v6H4z"/></svg>
+            <i class="bi bi-code-slash" aria-hidden="true"></i>
           </span>
           <span class="label" data-i18n="nav.developer_portal">Developer Portal</span>
           <span class="caret" aria-hidden="true">
@@ -175,7 +165,7 @@
     <header class="topbar">
       <div class="left">
         <div class="header-hamburger">
-          <button class="hamburger" aria-label="menu">
+          <button class="hamburger" aria-label="menu" data-i18n="a11y.menu" data-i18n-attr="aria-label">
             <span class="line"></span>
             <span class="line"></span>
             <span class="line"></span>
@@ -244,7 +234,7 @@
             </div>
             <div class="menu-item" data-i18n="profile.profile">Profile</div>
             <div class="menu-item" data-i18n="profile.organization">Organization</div>
-            <div class="menu-item help-item">Help ▸
+            <div class="menu-item help-item"><span data-i18n="profile.help">Help</span> ▸
               <div class="help-panel" aria-hidden="true">
                 <div class="help-row"><i class="bi bi-info-circle"></i><span data-i18n="profile.help.about">About</span></div>
                 <div class="help-row"><i class="bi bi-book"></i><span data-i18n="profile.help.documentation">Documentation</span></div>
@@ -381,7 +371,7 @@
           <!-- main content removed per request; summary sits at top of container -->
 
           <!-- Hexagon feature row (Safety / Productivity / Maintenance / Monitoring) -->
-          <div class="hexagon-row" role="region" aria-label="Feature categories">
+          <div class="hexagon-row" role="region" aria-label="Feature categories" data-i18n="a11y.feature_categories" data-i18n-attr="aria-label">
             <div class="hex-item">
               <div class="hex-wrap">
                 <svg class="hexagon-shape" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -424,7 +414,7 @@
           </div>
 
           <!-- Data panels row under hexagons -->
-          <div class="hex-data-row" role="region" aria-label="Feature data panels">
+          <div class="hex-data-row" role="region" aria-label="Feature data panels" data-i18n="a11y.feature_data_panels" data-i18n-attr="aria-label">
             <!-- Safety -->
             <div class="hex-panel">
               <div class="panel-title" data-i18n="panel.cps_events">CPSEvents</div>
