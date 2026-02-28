@@ -505,6 +505,9 @@ document.addEventListener('DOMContentLoaded',()=>{
     const SKIP = new Set(['SCRIPT','STYLE','IMG','SVG','PATH','BR','HR','INPUT','TEXTAREA','SELECT','BUTTON']);
     document.querySelectorAll('body *:not([data-i18n])').forEach(el=>{
       if(SKIP.has(el.tagName)) return;
+      // Only auto-translate leaf elements; replacing text on container elements
+      // can remove nested markup (e.g., hexagon SVG + icon inside .hex-item).
+      if(el.childElementCount > 0) return;
       // try matching by textContent first
       const txt = (el.textContent || '').trim();
       if(txt){
