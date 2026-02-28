@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   const tzPanel = document.getElementById('tzPanel');
   const tzList = document.getElementById('tzList');
   const headerHamburger = document.querySelector('.topbar .hamburger');
+  let activeDictionary = null;
 
   const avatarEl = document.getElementById('avatar');
   const currentUser = (function(){ try{ return JSON.parse(localStorage.getItem('currentUser')); }catch(e){ return null; }})();
@@ -59,8 +60,17 @@ document.addEventListener('DOMContentLoaded',()=>{
     }
   }
 
-  // messages array - start empty per current state
-  let messages = [];
+  // messages array - seeded with demo data
+  let messages = [
+    { titleKey: 'notif.device_offline', title: 'Device Offline', info: 'LDV-012', time: '2026-03-01 07:42' },
+    { titleKey: 'notif.high_engine_temp', title: 'High Engine Temp', info: 'Dump Truck-07', time: '2026-03-01 07:15' },
+    { titleKey: 'notif.geofence_exit', title: 'Geofence Exit', info: 'Drill-19', time: '2026-02-28 23:04' },
+    { titleKey: 'notif.maintenance_due', title: 'Maintenance Due', info: 'Fire Truck-03', time: '2026-02-28 18:27' }
+  ];
+
+  function t(key, fallback){
+    return (activeDictionary && Object.prototype.hasOwnProperty.call(activeDictionary, key)) ? activeDictionary[key] : fallback;
+  }
 
   function renderMessageCount(){
     msgCountEl.textContent = String(messages.length);
@@ -73,7 +83,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     if(messages.length === 0){
       const empty = document.createElement('div');
       empty.className = 'empty';
-      empty.textContent = 'No notifications';
+      empty.textContent = t('header.no_notifications', 'No notifications');
       notifList.appendChild(empty);
       return;
     }
@@ -81,8 +91,8 @@ document.addEventListener('DOMContentLoaded',()=>{
       const row = document.createElement('div');
       row.className = 'notif-row';
       const ncol = document.createElement('div'); ncol.className='col notif-col';
-      const t = document.createElement('div'); t.className='notif-text'; t.textContent = msg.title;
-      ncol.appendChild(t);
+      const titleEl = document.createElement('div'); titleEl.className='notif-text'; titleEl.textContent = msg.titleKey ? t(msg.titleKey, msg.title) : msg.title;
+      ncol.appendChild(titleEl);
       const icol = document.createElement('div'); icol.className='col info-col';
       const veh = document.createElement('div'); veh.className='vehicle'; veh.textContent = msg.info || '';
       icol.appendChild(veh);
@@ -115,10 +125,10 @@ document.addEventListener('DOMContentLoaded',()=>{
   if(profileName){
     if(signedIn && currentUser){
       profileName.textContent = (currentUser.name || currentUser.username) + ' ▾';
-      if(authAction) authAction.textContent = 'Sign Out';
+      if(authAction) authAction.textContent = t('profile.sign_out', 'Sign Out');
     } else {
-      profileName.textContent = 'Not signed in ▾';
-      if(authAction) authAction.textContent = 'Sign In';
+      profileName.textContent = `${t('profile.not_signed_in', 'Not signed in')} ▾`;
+      if(authAction) authAction.textContent = t('profile.sign_in', 'Sign In');
     }
   }
 
@@ -161,8 +171,8 @@ document.addEventListener('DOMContentLoaded',()=>{
       // sign out
       try{ localStorage.removeItem('currentUser'); }catch(e){}
       signedIn = false;
-      profileName.textContent = 'Not signed in ▾';
-      authAction.textContent = 'Sign In';
+      profileName.textContent = `${t('profile.not_signed_in', 'Not signed in')} ▾`;
+      authAction.textContent = t('profile.sign_in', 'Sign In');
       if(avatarEl) avatarEl.innerHTML = '';
       profileWrap.classList.remove('open');
       if(profileMenu) profileMenu.setAttribute('aria-hidden','true');
@@ -286,7 +296,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     const q = (filter||'').trim().toLowerCase();
     const list = organizations.filter(o=>o.name.toLowerCase().includes(q));
     if(list.length === 0){
-      const empty = document.createElement('div'); empty.className = 'empty'; empty.textContent = 'No organizations'; orgListEl.appendChild(empty); return;
+      const empty = document.createElement('div'); empty.className = 'empty'; empty.textContent = t('org.no_organizations', 'No organizations'); orgListEl.appendChild(empty); return;
     }
     list.forEach((o, idx)=>{
       const item = document.createElement('div'); item.className = 'org-item';
@@ -403,6 +413,58 @@ document.addEventListener('DOMContentLoaded',()=>{
     {code:'ru', name:'Russian', flag:'https://simac.app/images/flags/ru.png'},
     {code:'es', name:'Spanish', flag:'https://simac.app/images/flags/es.png'}
   ];
+  const supportedLangCodes = languages.map(l=>l.code);
+  let activeLanguage = localStorage.getItem('lang') || 'en';
+
+  const summaryRanges = {
+    day: { days: 1, hours: 24 },
+    week: { days: 7, hours: 168 },
+    fortnight: { days: 14, hours: 336 },
+    month: { days: 30, hours: 720 },
+    quarter: { days: 90, hours: 2160 }
+  };
+
+  const summaryLabels = {
+    en: { day: 'Day on Day', week: 'Week on Week', fortnight: 'Fortnight on Fortnight', month: 'Month on Month', quarter: 'Quarter on Quarter' },
+    af: { day: 'Dag op Dag', week: 'Week op Week', fortnight: 'Tweeweke op Tweeweke', month: 'Maand op Maand', quarter: 'Kwartaal op Kwartaal' },
+    es: { day: 'Día a Día', week: 'Semana a Semana', fortnight: 'Quincena a Quincena', month: 'Mes a Mes', quarter: 'Trimestre a Trimestre' },
+    fr: { day: 'Jour à Jour', week: 'Semaine à Semaine', fortnight: 'Quinzaine à Quinzaine', month: 'Mois à Mois', quarter: 'Trimestre à Trimestre' }
+  };
+
+  function formatDate(dateObj){
+    const y = dateObj.getFullYear();
+    const m = String(dateObj.getMonth() + 1).padStart(2, '0');
+    const d = String(dateObj.getDate()).padStart(2, '0');
+    return `${y}/${m}/${d}`;
+  }
+
+  function getSummaryLabel(period, lang){
+    const safeLang = summaryLabels[lang] ? lang : 'en';
+    return (summaryLabels[safeLang] && summaryLabels[safeLang][period]) || summaryLabels.en[period] || 'Quarter on Quarter';
+  }
+
+  function updateSummaryPeriod(period, save=true){
+    const safePeriod = summaryRanges[period] ? period : 'week';
+    const cfg = summaryRanges[safePeriod];
+    const end = new Date();
+    const start = new Date(end);
+    start.setDate(end.getDate() - cfg.days + 1);
+
+    const rangeEl = document.querySelector('.meta-range');
+    const timespanEl = document.querySelector('.meta-timespan');
+    const selectedEl = document.querySelector('.pill-selected');
+
+    if(rangeEl) rangeEl.textContent = `| Last ${cfg.days} days (${formatDate(start)} - ${formatDate(end)})`;
+    if(timespanEl) timespanEl.textContent = ` | Timespan: ${cfg.hours} hours`;
+    if(selectedEl){
+      selectedEl.textContent = getSummaryLabel(safePeriod, activeLanguage);
+      selectedEl.dataset.period = safePeriod;
+      selectedEl.removeAttribute('data-i18n');
+    }
+    if(save){
+      try{ localStorage.setItem('selectedPeriod', safePeriod); }catch(e){ /* ignore */ }
+    }
+  }
 
   function renderLanguages(){
     if(!languageMenu) return;
@@ -427,7 +489,7 @@ document.addEventListener('DOMContentLoaded',()=>{
       }
       const name = document.createElement('div'); name.className = 'lang-name'; name.textContent = l.name;
       item.appendChild(icon); item.appendChild(name);
-      if(localStorage.getItem('lang') === l.code) item.classList.add('selected');
+      if(activeLanguage === l.code) item.classList.add('selected');
       item.addEventListener('click', (e)=>{
         e.stopPropagation();
         setLanguage(l.code);
@@ -437,25 +499,28 @@ document.addEventListener('DOMContentLoaded',()=>{
   }
 
   function setLanguage(code){
-    localStorage.setItem('lang', code);
+    const safeCode = supportedLangCodes.includes(code) ? code : 'en';
+    activeLanguage = safeCode;
+    localStorage.setItem('lang', safeCode);
     document.querySelectorAll('.language-item').forEach(i=>{
-      i.classList.toggle('selected', i.dataset.code === code);
+      i.classList.toggle('selected', i.dataset.code === safeCode);
     });
-    const selected = languages.find(x=>x.code === code);
+    const selected = languages.find(x=>x.code === safeCode);
     if(languageToggle){
       const lbl = languageToggle.querySelector('.lang-label');
-      if(lbl) lbl.textContent = selected ? selected.name : 'Language';
+      if(lbl) lbl.textContent = selected ? selected.name : t('profile.language', 'Language');
       languageToggle.classList.remove('open');
       if(languageMenu) languageMenu.setAttribute('aria-hidden','true');
     }
     // load both the requested language and the English source so we can
     // translate elements without `data-i18n` by matching English strings.
-    Promise.all([loadTranslations(code), loadTranslations('en')]).then(([dict,enDict])=>{
+    Promise.all([loadTranslations(safeCode), loadTranslations('en')]).then(([dict,enDict])=>{
       if(dict) applyTranslations(dict, enDict);
+      const selectedPeriod = (document.querySelector('.pill-selected') || {}).dataset?.period || localStorage.getItem('selectedPeriod') || 'week';
+      updateSummaryPeriod(selectedPeriod, false);
     }).catch(err=>{
-      // fallback: try to at least load the requested language alone
-      console.warn('Translation load partially failed for', code, err);
-      loadTranslations(code).then(dict=>{ if(dict) applyTranslations(dict, translationsCache['en']); }).catch(()=>{});
+      console.warn('Translation load partially failed for', safeCode, err);
+      loadTranslations('en').then(dict=>{ if(dict) applyTranslations(dict, dict); }).catch(()=>{});
     });
   }
 
@@ -473,14 +538,17 @@ document.addEventListener('DOMContentLoaded',()=>{
 
   function applyTranslations(dict, enDict){
     if(!dict) return;
+    activeDictionary = dict;
     // Primary: translate annotated elements using data-i18n
     document.querySelectorAll('[data-i18n]').forEach(el=>{
       const key = el.getAttribute('data-i18n');
+      if(key === 'org.label') return;
       const val = dict[key];
       if(typeof val === 'undefined') return;
       const tag = el.tagName.toLowerCase();
       if(tag === 'input' || tag === 'textarea'){
         el.setAttribute('placeholder', val);
+        if(el.hasAttribute('aria-label')) el.setAttribute('aria-label', val);
         return;
       }
       if(el.hasAttribute('title')){ el.setAttribute('title', val); return; }
@@ -503,11 +571,26 @@ document.addEventListener('DOMContentLoaded',()=>{
     });
 
     const SKIP = new Set(['SCRIPT','STYLE','IMG','SVG','PATH','BR','HR','INPUT','TEXTAREA','SELECT','BUTTON']);
+
+    // translate text nodes across the page (including nested structures)
+    const bodyWalker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
+    const textUpdates = [];
+    while(bodyWalker.nextNode()){
+      const node = bodyWalker.currentNode;
+      const parentTag = node.parentElement ? node.parentElement.tagName : '';
+      if(SKIP.has(parentTag)) continue;
+      if(node.parentElement && node.parentElement.closest('[data-i18n]')) continue;
+      const raw = node.nodeValue || '';
+      const txt = raw.trim();
+      if(!txt) continue;
+      const key = reverse[txt] || reverse[txt.replace(/\s+/g,' ')];
+      if(key && dict[key]) textUpdates.push({ node, value: dict[key] });
+    }
+    textUpdates.forEach(u=>{ u.node.nodeValue = u.value; });
+
     document.querySelectorAll('body *:not([data-i18n])').forEach(el=>{
       if(SKIP.has(el.tagName)) return;
-      // Only auto-translate leaf elements; replacing text on container elements
-      // can remove nested markup (e.g., hexagon SVG + icon inside .hex-item).
-      if(el.childElementCount > 0) return;
+
       // try matching by textContent first
       const txt = (el.textContent || '').trim();
       if(txt){
@@ -540,7 +623,24 @@ document.addEventListener('DOMContentLoaded',()=>{
         const tKey = reverse[t] || reverse[t.replace(/\s+/g,' ')];
         if(tKey && dict[tKey]) el.setAttribute('title', dict[tKey]);
       }
+      if(el.hasAttribute('aria-label')){
+        const a = (el.getAttribute('aria-label')||'').trim();
+        const aKey = reverse[a] || reverse[a.replace(/\s+/g,' ')];
+        if(aKey && dict[aKey]) el.setAttribute('aria-label', dict[aKey]);
+      }
     });
+
+    if(profileName && !signedIn){
+      profileName.textContent = `${t('profile.not_signed_in', 'Not signed in')} ▾`;
+    }
+    if(authAction && !signedIn){
+      authAction.textContent = t('profile.sign_in', 'Sign In');
+    }
+    if(orgSearch){
+      orgSearch.placeholder = t('org.search', 'Search');
+      orgSearch.setAttribute('aria-label', t('org.search_organizations', 'Search organizations'));
+    }
+    renderNotifications();
   }
 
   if(languageToggle){
@@ -603,7 +703,9 @@ document.addEventListener('DOMContentLoaded',()=>{
       const savedLang = localStorage.getItem('lang');
       const navLang = (navigator.language || navigator.userLanguage || 'en').split('-')[0];
       // prefer saved, then navigator if supported, else 'en'
-      const preferred = savedLang || (languages.find(l=>l.code === navLang) ? navLang : 'en');
+      const preferred = (savedLang && supportedLangCodes.includes(savedLang))
+        ? savedLang
+        : (supportedLangCodes.includes(navLang) ? navLang : 'en');
       try{
         setLanguage(preferred);
       }catch(e){
@@ -742,14 +844,20 @@ document.addEventListener('DOMContentLoaded',()=>{
     pillMenu.querySelectorAll('li').forEach(li=>{
       li.addEventListener('click', (e)=>{
         e.stopPropagation();
-        const label = li.textContent.trim();
-        const selected = pillAction.querySelector('.pill-selected');
-        if(selected) selected.textContent = label;
+        const period = li.dataset.value || 'quarter';
+        updateSummaryPeriod(period, true);
         closePill();
       });
     });
     // close on outside click (already handled above) but ensure menu closes when clicking other areas
     document.addEventListener('click', ()=>{ closePill(); });
+  }
+
+  try{
+    const savedPeriod = localStorage.getItem('selectedPeriod') || 'week';
+    updateSummaryPeriod(savedPeriod, false);
+  }catch(e){
+    updateSummaryPeriod('week', false);
   }
 
   // Initialize Chart.js doughnuts for the replaced donut visuals

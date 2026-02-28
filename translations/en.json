@@ -3,8 +3,15 @@
   "header.notifications": "NOTIFICATIONS:",
   "header.search": "Search",
   "header.view_all": "View All",
+  "header.notification_col": "Notification",
+  "header.info_col": "Info",
+  "header.timestamp_col": "Time stamp",
+  "header.no_notifications": "No notifications",
 
   "org.label": "Gold Fields - South Deep",
+  "org.search": "Search",
+  "org.search_organizations": "Search organizations",
+  "org.no_organizations": "No organizations",
 
   "profile.dark_mode": "Dark Mode",
   "profile.language": "Language",
@@ -14,6 +21,8 @@
   "profile.help.documentation": "Documentation",
   "profile.help.changelog": "Change Log",
   "profile.help.contact": "Contact Us",
+  "profile.sign_in": "Sign In",
+  "profile.not_signed_in": "Not signed in",
   "profile.sign_out": "Sign Out",
 
   "title.simac": "SIMAC",
@@ -30,7 +39,16 @@
   "fleet.uv": "UV",
 
   "summary.pill_label": "MACHINE DATA SUMMARY",
+  "pill.day": "Day on Day",
+  "pill.week": "Week on Week",
+  "pill.fortnight": "Fortnight on Fortnight",
+  "pill.month": "Month on Month",
   "pill.quarter": "Quarter on Quarter",
+
+  "notif.device_offline": "Device Offline",
+  "notif.high_engine_temp": "High Engine Temp",
+  "notif.geofence_exit": "Geofence Exit",
+  "notif.maintenance_due": "Maintenance Due",
 
   "nav.home": "Home",
   "nav.alerts": "Alerts",
@@ -105,7 +123,5 @@
 
   "panel.monitoring": "MONITORING",
   "panel.monitoring.count": "<span class=\"big\">57</span><span class=\"sep\">/</span><span class=\"big\">86</span>",
-  "panel.monitoring.button": "View",
-
-  "pill.quarter": "Quarter on Quarter"
+  "panel.monitoring.button": "View"
 }

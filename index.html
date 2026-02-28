@@ -82,10 +82,12 @@
           <span class="label" data-i18n="nav.dashboards">Dashboards</span>
         </li>
         <li>
-          <span class="icon">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/><path d="M4 20a8 8 0 0 1 16 0"/></svg>
-          </span>
-          <span class="label" data-i18n="nav.users">Users</span>
+          <a href="users.html" class="nav-link">
+            <span class="icon">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/><path d="M4 20a8 8 0 0 1 16 0"/></svg>
+            </span>
+            <span class="label" data-i18n="nav.users">Users</span>
+          </a>
         </li>
         <li>
           <span class="icon">
@@ -202,12 +204,12 @@
 
           <div class="notif-table">
             <div class="thead">
-              <div class="col notif-col">Notification</div>
-              <div class="col info-col">Info</div>
-              <div class="col time-col">Time stamp</div>
+              <div class="col notif-col" data-i18n="header.notification_col">Notification</div>
+              <div class="col info-col" data-i18n="header.info_col">Info</div>
+              <div class="col time-col" data-i18n="header.timestamp_col">Time stamp</div>
             </div>
             <div class="notif-list" id="notifList">
-              <div class="empty">No notifications</div>
+              <div class="empty" data-i18n="header.no_notifications">No notifications</div>
             </div>
           </div>
         </div>
@@ -219,7 +221,7 @@
 
           <div class="org-panel" aria-hidden="true">
             <div class="org-panel-header">
-              <input class="org-search" placeholder="Search" aria-label="Search organizations">
+              <input class="org-search" placeholder="Search" aria-label="Search organizations" data-i18n="org.search">
             </div>
             <div class="org-list" role="list">
               <!-- populated by JS -->
@@ -363,14 +365,14 @@
                 </span>
               </div>
               <div class="pill-action" tabindex="0" aria-haspopup="true" aria-expanded="false">
-                <span class="pill-selected" data-i18n="pill.quarter">Quarter on Quarter</span>
+                <span class="pill-selected" data-i18n="pill.week">Week on Week</span>
                 <span class="pill-caret"> ▾</span>
                 <ul class="pill-menu" aria-hidden="true">
-                  <li data-value="day">Day on Day</li>
-                  <li data-value="week">Week on Week</li>
-                  <li data-value="fortnight">Fortnight on Fortnight</li>
-                  <li data-value="month">Month on Month</li>
-                  <li data-value="quarter">Quarter on Quarter</li>
+                  <li data-value="day" data-i18n="pill.day">Day on Day</li>
+                  <li data-value="week" data-i18n="pill.week">Week on Week</li>
+                  <li data-value="fortnight" data-i18n="pill.fortnight">Fortnight on Fortnight</li>
+                  <li data-value="month" data-i18n="pill.month">Month on Month</li>
+                  <li data-value="quarter" data-i18n="pill.quarter">Quarter on Quarter</li>
                 </ul>
               </div>
             </div>

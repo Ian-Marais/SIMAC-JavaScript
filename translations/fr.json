@@ -1,23 +1,32 @@
 {
   "header.messages": "Messages",
-  "header.notifications": "NOTIFICATIONS:",
-  "header.search": "Search",
-  "header.view_all": "View All",
+  "header.notifications": "NOTIFICATIONS :",
+  "header.search": "Rechercher",
+  "header.view_all": "Voir Tout",
+  "header.notification_col": "Notification",
+  "header.info_col": "Info",
+  "header.timestamp_col": "Horodatage",
+  "header.no_notifications": "Aucune notification",
 
   "org.label": "Gold Fields - South Deep",
+  "org.search": "Rechercher",
+  "org.search_organizations": "Rechercher des organisations",
+  "org.no_organizations": "Aucune organisation",
 
-  "profile.dark_mode": "Dark Mode",
-  "profile.language": "Language",
-  "profile.profile": "Profile",
-  "profile.organization": "Organization",
+  "profile.dark_mode": "Mode Sombre",
+  "profile.language": "Langue",
+  "profile.profile": "Profil",
+  "profile.organization": "Organisation",
   "profile.help.about": "About",
   "profile.help.documentation": "Documentation",
   "profile.help.changelog": "Change Log",
   "profile.help.contact": "Contact Us",
+  "profile.sign_in": "Se connecter",
+  "profile.not_signed_in": "Non connecté",
   "profile.sign_out": "Sign Out",
 
   "title.simac": "SIMAC",
-  "title.subtitle": "Short Interval Monitoring and Control",
+  "title.subtitle": "Surveillance et Contrôle à Court Intervalle",
 
   "fleet.button": "Fleet",
   "fleet.all": "Fleet",
@@ -29,11 +38,20 @@
   "fleet.unknown": "Unknown",
   "fleet.uv": "UV",
 
-  "summary.pill_label": "MACHINE DATA SUMMARY",
-  "pill.quarter": "Quarter on Quarter",
+  "summary.pill_label": "RÉSUMÉ DES DONNÉES MACHINE",
+  "pill.day": "Jour à Jour",
+  "pill.week": "Semaine à Semaine",
+  "pill.fortnight": "Quinzaine à Quinzaine",
+  "pill.month": "Mois à Mois",
+  "pill.quarter": "Trimestre sur Trimestre",
 
-  "nav.home": "Home",
-  "nav.alerts": "Alerts",
+  "notif.device_offline": "Appareil hors ligne",
+  "notif.high_engine_temp": "Température moteur élevée",
+  "notif.geofence_exit": "Sortie de géorepérage",
+  "notif.maintenance_due": "Maintenance requise",
+
+  "nav.home": "Accueil",
+  "nav.alerts": "Alertes",
   "nav.alerts.active": "Active Alerts",
   "nav.alerts.history": "Alerts History",
   "nav.machines": "Machines",
@@ -105,8 +123,6 @@
 
   "panel.monitoring": "MONITORING",
   "panel.monitoring.count": "<span class=\"big\">57</span><span class=\"sep\">/</span><span class=\"big\">86</span>",
-  "panel.monitoring.button": "View",
-
-  "pill.quarter": "Quarter on Quarter"
+  "panel.monitoring.button": "View"
 }
 

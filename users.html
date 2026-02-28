@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SIMAC · Users</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="users-page">
+  <main class="users-shell">
+    <header class="users-hero">
+      <div>
+        <p class="secondary" style="text-transform:uppercase;letter-spacing:0.2em;font-size:0.75rem;color:rgba(255,255,255,0.6);margin:0 0 8px">User directory</p>
+        <h1>Users</h1>
+        <p>Browse every account that is registered within the SIMAC platform. Filter by activity state, search by name, and review the last login history before taking action.</p>
+      </div>
+      <div class="users-hero-meta">
+        <span class="secondary" style="font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.65)">Profiles</span>
+        <strong id="usersCount">0</strong>
+        <span style="font-size:0.85rem;color:rgba(255,255,255,0.65)">shown</span>
+      </div>
+    </header>
+
+    <section class="users-table-panel" aria-labelledby="users-heading">
+      <div class="users-table-header">
+        <h2 id="users-heading" class="sr-only">Users table</h2>
+        <label for="userSearch" class="sr-only">Search users</label>
+        <input id="userSearch" type="search" placeholder="Search by name, username or email" autocomplete="off">
+        <label for="statusFilter" class="sr-only">Filter by status</label>
+        <select id="statusFilter" aria-label="Filter users by account status">
+          <option value="">All statuses</option>
+          <option value="active">Active only</option>
+          <option value="inactive">Inactive only</option>
+        </select>
+      </div>
+
+      <div class="users-table-wrapper">
+        <table class="users-table" aria-describedby="usersSummary">
+          <caption id="usersSummary">Showing <span id="usersSummaryCount">0</span> users</caption>
+          <thead>
+            <tr>
+              <th scope="col">User</th>
+              <th scope="col">Email</th>
+              <th scope="col">Roles</th>
+              <th scope="col">Location</th>
+              <th scope="col">Status</th>
+              <th scope="col">Last login</th>
+              <th scope="col">Joined</th>
+            </tr>
+          </thead>
+          <tbody id="usersTableBody">
+            <tr class="empty-row"><td colspan="7">Loading users…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (function(){
+      const tableBody = document.getElementById('usersTableBody');
+      const totalCountEl = document.getElementById('usersCount');
+      const summaryCountEl = document.getElementById('usersSummaryCount');
+      const searchInput = document.getElementById('userSearch');
+      const statusFilter = document.getElementById('statusFilter');
+      let users = [];
+
+      const formatDate = (value) => {
+        if(!value) return '—';
+        const parsed = new Date(value);
+        if(Number.isNaN(parsed.getTime())) return value;
+        return parsed.toLocaleString('en-GB',{dateStyle:'medium',timeStyle:'short'});
+      };
+
+      const renderRows = (list) => {
+        summaryCountEl.textContent = list.length;
+        totalCountEl.textContent = list.length;
+        if(list.length === 0){
+          tableBody.innerHTML = '<tr class="empty-row"><td colspan="7">No users match that search.</td></tr>';
+          return;
+        }
+
+        tableBody.innerHTML = list.map(user => {
+          const location = user.address ? [user.address.city, user.address.country].filter(Boolean).join(', ') : '—';
+          const roles = (user.roles || []).join(', ') || '—';
+          const statusClass = user.active ? 'active' : 'inactive';
+          const lastLogin = formatDate(user.lastLogin);
+          const joined = formatDate(user.createdAt);
+          const avatar = user.avatar || 'https://simac.app/web/images/person-blank.png';
+          return `
+            <tr>
+              <td>
+                <img class="avatar" src="${avatar}" alt="${user.name || 'avatar'}">
+                <div>
+                  <span class="label-name">${user.name || user.username || 'Unknown user'}</span>
+                  <span class="secondary">@${user.username || 'unknown'}</span>
+                </div>
+              </td>
+              <td>${user.email || '—'}</td>
+              <td>${roles}</td>
+              <td>${location}</td>
+              <td><span class="status-pill ${statusClass}">${user.active ? 'Active' : 'Inactive'}</span></td>
+              <td>${lastLogin}</td>
+              <td>${joined}</td>
+            </tr>
+          `;
+        }).join('');
+      };
+
+      const applyFilters = () => {
+        const text = (searchInput.value || '').trim().toLowerCase();
+        const status = statusFilter.value;
+        const filtered = users.filter(user => {
+          const haystack = [user.name, user.username, user.email].join(' ').toLowerCase();
+          const statusMatch = !status || (status === 'active' ? user.active : !user.active);
+          return statusMatch && haystack.includes(text);
+        });
+        renderRows(filtered);
+      };
+
+      const init = () => {
+        fetch('user.json')
+          .then(res => res.json())
+          .then(data => {
+            users = Array.isArray(data.users) ? data.users : [];
+            renderRows(users);
+          })
+          .catch(() => {
+            tableBody.innerHTML = '<tr class="empty-row"><td colspan="7">Unable to load users.</td></tr>';
+          });
+      };
+
+      if(searchInput){
+        searchInput.addEventListener('input', applyFilters);
+      }
+      if(statusFilter){
+        statusFilter.addEventListener('change', applyFilters);
+      }
+
+      init();
+    })();
+  </script>
+</body>
+</html>
