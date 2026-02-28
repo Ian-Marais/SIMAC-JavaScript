@@ -540,7 +540,23 @@ body.sidebar-collapsed .main{margin-left:72px}
 /* CPSEvents specific: use a solid two-segment bar (flex) so segments meet exactly */
 .progress.cps-bar{background:transparent;border-radius:0;height:20px;margin:6px 0;display:flex;overflow:hidden}
 .progress.cps-bar .progress-fill{background:#0a8f11;height:100%;border-radius:0;flex:0 0 auto}
+.progress.cps-bar .progress-fill-yellow{background:#ffd34d;height:100%;border-radius:0;flex:0 0 auto}
+.progress.cps-bar .progress-fill{background:#0a8f11;height:100%;border-radius:0;flex:0 0 auto}
 .progress.cps-bar .progress-fill-red{background:#e03232;height:100%;border-radius:0;flex:0 0 auto}
+
+/* Brighten progress fill colors on hover (similar effect to pie hover whitening) */
+.progress.cps-bar .progress-fill,
+.progress.cps-bar .progress-fill-red{
+  transition: filter 140ms ease;
+}
+
+/* Brighten only the segment being hovered */
+.progress.cps-bar .progress-fill:hover{
+  filter: brightness(1.25);
+}
+.progress.cps-bar .progress-fill-red:hover{
+  filter: brightness(1.25);
+}
 
 /* Tooltip for progress fills (left segments) */
 .progress-tooltip{

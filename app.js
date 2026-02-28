@@ -761,7 +761,8 @@ document.addEventListener('DOMContentLoaded',()=>{
             datasets: [{
               data: [3129.33,5043.99,178053.14],
               backgroundColor: ['#0a8f11','#e0a800','#e03232'],
-              hoverOffset: 6
+              hoverBackgroundColor: ['#2ec43a','#ffd34d','#ff6b6b'],
+              hoverOffset: 0
             }]
           },
           options: {
@@ -844,7 +845,7 @@ document.addEventListener('DOMContentLoaded',()=>{
           type: 'doughnut',
           data: {
             labels: ['Monitored','Other'],
-            datasets: [{ data: [57,29], backgroundColor: ['#1fa65a','#6b6f74'], hoverOffset: 6 }]
+            datasets: [{ data: [57,29], backgroundColor: ['#1fa65a','#6b6f74'], hoverBackgroundColor: ['#45d07f','#9aa0a5'], hoverOffset: 0 }]
           },
           options: {
             responsive: false,
@@ -963,12 +964,15 @@ document.addEventListener('DOMContentLoaded',()=>{
   function applyProgressBarLevels(){
     document.querySelectorAll('.progress.cps-bar').forEach(bar=>{
       const left = parseFloat(bar.getAttribute('data-left-percent')) || 0;
+      const middle = parseFloat(bar.getAttribute('data-middle-percent')) || 0;
       const leftEl = bar.querySelector('.progress-fill');
+      const midEl = bar.querySelector('.progress-fill-yellow');
       const rightEl = bar.querySelector('.progress-fill-red');
-      if(leftEl && rightEl){
-        leftEl.style.width = left + '%';
-        rightEl.style.width = (100 - left) + '%';
-      }
+      // compute widths: left, middle (optional), right = remaining
+      const right = Math.max(0, 100 - left - middle);
+      if(leftEl) leftEl.style.width = left + '%';
+      if(midEl) midEl.style.width = middle + '%';
+      if(rightEl) rightEl.style.width = right + '%';
     });
   }
 
@@ -1043,6 +1047,21 @@ document.addEventListener('DOMContentLoaded',()=>{
           if(tooltipEl && tooltipEl.style.display !== 'none') showTooltip(rTitle, rValue, rect);
         });
         rightEl.addEventListener('mouseleave', ()=>{ hideTooltip(); });
+      }
+      // attach listeners to the middle (yellow) segment if present
+      const midEl = bar.querySelector('.progress-fill-yellow');
+      if(midEl){
+        const mTitle = bar.getAttribute('data-middle-title') || '';
+        const mValue = bar.getAttribute('data-middle-value') || '';
+        midEl.addEventListener('mouseenter', ()=>{
+          const rect = midEl.getBoundingClientRect();
+          showTooltip(mTitle, mValue, rect);
+        });
+        midEl.addEventListener('mousemove', ()=>{
+          const rect = midEl.getBoundingClientRect();
+          if(tooltipEl && tooltipEl.style.display !== 'none') showTooltip(mTitle, mValue, rect);
+        });
+        midEl.addEventListener('mouseleave', ()=>{ hideTooltip(); });
       }
     });
   })();
