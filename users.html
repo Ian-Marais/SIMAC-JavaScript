@@ -35,12 +35,12 @@
               <thead>
                 <tr>
                   <th scope="col" class="users-col-expander"></th>
-                  <th scope="col">First Name <span class="users-sort-arrow">↑</span></th>
-                  <th scope="col">Last Name</th>
-                  <th scope="col">Email Address</th>
-                  <th scope="col">Mobile Number</th>
-                  <th scope="col">User Type</th>
-                  <th scope="col">Last Login</th>
+                  <th scope="col" role="button" tabindex="0" data-sort="first">First Name <span class="users-sort-arrow">↑</span></th>
+                  <th scope="col" role="button" tabindex="0" data-sort="last">Last Name <span class="users-sort-arrow"></span></th>
+                  <th scope="col" role="button" tabindex="0" data-sort="email">Email Address <span class="users-sort-arrow"></span></th>
+                  <th scope="col" role="button" tabindex="0" data-sort="mobile">Mobile Number <span class="users-sort-arrow"></span></th>
+                  <th scope="col" role="button" tabindex="0" data-sort="type">User Type <span class="users-sort-arrow"></span></th>
+                  <th scope="col" role="button" tabindex="0" data-sort="login">Last Login <span class="users-sort-arrow"></span></th>
                   <th scope="col">View</th>
                 </tr>
               </thead>
@@ -76,6 +76,10 @@
       const downloadCsvBtn = document.getElementById('downloadCsvBtn');
       const perPage = 10;
       let users = [];
+
+      // sort state: key and direction ('asc' | 'desc')
+      let sortKey = 'first';
+      let sortDir = 'asc';
 
       function splitName(fullName){
         const parts = String(fullName || '').trim().split(/\s+/).filter(Boolean);
@@ -159,7 +163,8 @@
       }
 
       function renderRows(list){
-        const shown = list.slice(0, perPage);
+        const sorted = sortList(list);
+        const shown = sorted.slice(0, perPage);
         if(!shown.length){
           tableBody.innerHTML = '<tr class="empty-row"><td colspan="8">No users match your search.</td></tr>';
           rangeEl.textContent = '1-0 of 0';
@@ -167,6 +172,84 @@
         }
         tableBody.innerHTML = shown.map(rowMarkup).join('');
         rangeEl.textContent = `1-${shown.length} of ${list.length}`;
+      }
+
+      function compareUsers(a, b){
+        let aVal, bVal;
+        switch(sortKey){
+          case 'first':
+            aVal = splitName(a.name || a.username).first.toLowerCase();
+            bVal = splitName(b.name || b.username).first.toLowerCase();
+            break;
+          case 'last':
+            aVal = splitName(a.name || a.username).last.toLowerCase();
+            bVal = splitName(b.name || b.username).last.toLowerCase();
+            break;
+          case 'email':
+            aVal = String(a.email || '').toLowerCase();
+            bVal = String(b.email || '').toLowerCase();
+            break;
+          case 'mobile':
+            aVal = String(a.mobile || phoneFallback(a.id || a.username)).replace(/\D/g,'');
+            bVal = String(b.mobile || phoneFallback(b.id || b.username)).replace(/\D/g,'');
+            break;
+          case 'type':
+            aVal = getUserType(a).toLowerCase();
+            bVal = getUserType(b).toLowerCase();
+            break;
+          case 'login':
+            aVal = new Date(a.lastLogin).getTime() || 0;
+            bVal = new Date(b.lastLogin).getTime() || 0;
+            break;
+          default:
+            aVal = '';
+            bVal = '';
+        }
+
+        if(aVal === bVal) return 0;
+        const multiplier = sortDir === 'asc' ? 1 : -1;
+        if(typeof aVal === 'number' || typeof bVal === 'number'){
+          return (aVal - bVal) * multiplier;
+        }
+        return String(aVal).localeCompare(String(bVal)) * multiplier;
+      }
+
+      function sortList(list){
+        return list.slice().sort(compareUsers);
+      }
+
+      function updateSortIndicators(){
+        const heads = document.querySelectorAll('th[data-sort]');
+        heads.forEach((th)=>{
+          const key = th.getAttribute('data-sort');
+          const span = th.querySelector('.users-sort-arrow');
+          if(!span) return;
+          if(key === sortKey){
+            span.textContent = sortDir === 'asc' ? '↑' : '↓';
+          } else {
+            span.textContent = '';
+          }
+        });
+      }
+
+      function setupSortHandlers(){
+        const heads = document.querySelectorAll('th[data-sort]');
+        heads.forEach((th)=>{
+          const key = th.getAttribute('data-sort');
+          const activate = ()=>{
+            if(sortKey === key){
+              sortDir = sortDir === 'asc' ? 'desc' : 'asc';
+            } else {
+              sortKey = key;
+              sortDir = 'asc';
+            }
+            updateSortIndicators();
+            renderRows(filteredUsers());
+          };
+          th.addEventListener('click', activate);
+          th.addEventListener('keydown', (e)=>{ if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); } });
+        });
+        updateSortIndicators();
       }
 
       function filteredUsers(){
@@ -217,15 +300,12 @@
       }
 
       function init(){
+        setupSortHandlers();
         fetch('user.json')
           .then((res)=>res.json())
           .then((data)=>{
             users = Array.isArray(data.users) ? data.users : [];
-            users = users.sort((a,b)=>{
-              const aFirst = splitName(a.name || a.username).first.toLowerCase();
-              const bFirst = splitName(b.name || b.username).first.toLowerCase();
-              return aFirst.localeCompare(bFirst);
-            });
+            // initial sort will be applied by renderRows via sortList
             renderRows(users);
           })
           .catch(()=>{
