@@ -53,7 +53,15 @@
           <div class="users-table-footer">
             <div class="users-pagination">
               <span>Rows per page:</span>
-              <button type="button" class="users-page-dd" id="usersPerPage">10 <i class="bi bi-chevron-down"></i></button>
+              <div class="users-page-dd" style="display:inline-block;">
+                <label for="usersPerPage" class="sr-only">Rows per page</label>
+                <select id="usersPerPage" class="users-page-select" aria-label="Rows per page">
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                </select>
+              </div>
               <span id="usersRange">1-0 of 0</span>
               <button type="button" class="users-page-nav" aria-label="Previous page"><i class="bi bi-chevron-left"></i></button>
               <button type="button" class="users-page-nav" aria-label="Next page"><i class="bi bi-chevron-right"></i></button>
@@ -74,8 +82,14 @@
       const searchInput = document.getElementById('userSearch');
       const rangeEl = document.getElementById('usersRange');
       const downloadCsvBtn = document.getElementById('downloadCsvBtn');
-      const perPage = 10;
+      let perPage = 10;
       let users = [];
+      let currentPage = 0; // 0-based
+
+      const prevBtn = document.querySelector('.users-page-nav[aria-label="Previous page"]');
+      const nextBtn = document.querySelector('.users-page-nav[aria-label="Next page"]');
+      const perPageBtn = document.getElementById('usersPerPage');
+      const perPageOptions = [10,25,50,100];
 
       // sort state: key and direction ('asc' | 'desc')
       let sortKey = 'first';
@@ -164,14 +178,24 @@
 
       function renderRows(list){
         const sorted = sortList(list);
-        const shown = sorted.slice(0, perPage);
+        const total = sorted.length;
+        const totalPages = Math.max(1, Math.ceil(total / perPage));
+        // clamp currentPage
+        if(currentPage >= totalPages) currentPage = totalPages - 1;
+        if(currentPage < 0) currentPage = 0;
+        const start = currentPage * perPage;
+        const end = Math.min(start + perPage, total);
+        const shown = sorted.slice(start, end);
         if(!shown.length){
           tableBody.innerHTML = '<tr class="empty-row"><td colspan="8">No users match your search.</td></tr>';
           rangeEl.textContent = '1-0 of 0';
           return;
         }
         tableBody.innerHTML = shown.map(rowMarkup).join('');
-        rangeEl.textContent = `1-${shown.length} of ${list.length}`;
+        rangeEl.textContent = `${start + 1}-${end} of ${total}`;
+        // update nav buttons disabled state
+        if(prevBtn) prevBtn.disabled = currentPage === 0;
+        if(nextBtn) nextBtn.disabled = currentPage >= totalPages - 1;
       }
 
       function compareUsers(a, b){
@@ -226,8 +250,12 @@
           if(!span) return;
           if(key === sortKey){
             span.textContent = sortDir === 'asc' ? '↑' : '↓';
+            th.setAttribute('aria-sort', sortDir === 'asc' ? 'ascending' : 'descending');
+            th.classList.add('sorted');
           } else {
             span.textContent = '';
+            th.removeAttribute('aria-sort');
+            th.classList.remove('sorted');
           }
         });
       }
@@ -243,6 +271,7 @@
               sortKey = key;
               sortDir = 'asc';
             }
+            currentPage = 0;
             updateSortIndicators();
             renderRows(filteredUsers());
           };
@@ -263,6 +292,7 @@
       }
 
       function applySearch(){
+        currentPage = 0;
         renderRows(filteredUsers());
       }
 
@@ -287,7 +317,7 @@
       }
 
       function downloadCsv(){
-        const current = filteredUsers();
+        const current = sortList(filteredUsers());
         const blob = new Blob([toCsv(current)], { type: 'text/csv;charset=utf-8;' });
         const url = URL.createObjectURL(blob);
         const anchor = document.createElement('a');
@@ -297,6 +327,18 @@
         anchor.click();
         anchor.remove();
         URL.revokeObjectURL(url);
+      }
+
+      // pagination handlers
+      if(prevBtn) prevBtn.addEventListener('click', ()=>{ if(currentPage>0){ currentPage--; renderRows(filteredUsers()); } });
+      if(nextBtn) nextBtn.addEventListener('click', ()=>{ currentPage++; renderRows(filteredUsers()); });
+      // rows-per-page native select handler
+      if(perPageBtn){
+        perPageBtn.addEventListener('change', (e)=>{
+          perPage = Number(perPageBtn.value) || 10;
+          currentPage = 0;
+          renderRows(filteredUsers());
+        });
       }
 
       function init(){

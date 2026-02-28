@@ -466,6 +466,26 @@ body.users-page{font-family:'Space Grotesk',Inter,'Segoe UI',Arial,sans-serif;ba
 .users-page-dd{background:transparent;border:0;color:#cfcfcf;display:inline-flex;align-items:center;gap:8px;cursor:pointer}
 .users-page-nav{background:transparent;border:0;color:#d8d8d8;font-size:20px;cursor:pointer;padding:0}
 .users-download{min-width:160px;font-size:12px;padding:10px 12px}
+.users-page-select{
+  background: linear-gradient(180deg,#141414,#0f0f10);
+  color: #e6e6e6;
+  border: 1px solid rgba(255,255,255,0.04);
+  padding: 6px 34px 6px 10px;
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 12px;
+  /* gold chevron SVG */
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'><path fill='%23d4aa56' d='M0 0l5 6 5-6z'/></svg>");
+}
+.users-page-select:focus{outline:2px solid rgba(212,170,86,0.18);outline-offset:2px}
+.users-page-select option{background:#141414;color:#e6e6e6}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
 @media (max-width:900px){
   .users-head-row{flex-direction:column;align-items:flex-start}
