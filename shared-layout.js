@@ -12,10 +12,12 @@
     <nav class="nav">
       <ul>
         <li>
-          <span class="icon">
-            <i class="bi bi-house" aria-hidden="true"></i>
-          </span>
-          <span class="label" data-i18n="nav.home">Home</span>
+          <a href="index.html" class="nav-link">
+            <span class="icon">
+              <i class="bi bi-house" aria-hidden="true"></i>
+            </span>
+            <span class="label" data-i18n="nav.home">Home</span>
+          </a>
         </li>
         <li class="expandable">
           <span class="icon">
@@ -77,8 +79,10 @@
           <span class="label" data-i18n="nav.organizations">Organizations</span>
         </li>
         <li>
-          <span class="icon"><i class="bi bi-map" aria-hidden="true"></i></span>
-          <span class="label" data-i18n="nav.sitelayout">SiteLayout</span>
+          <a href="map.html" class="nav-link">
+            <span class="icon"><i class="bi bi-map" aria-hidden="true"></i></span>
+            <span class="label" data-i18n="nav.map">Map</span>
+          </a>
         </li>
         <li>
           <span class="icon"><i class="bi bi-tags" aria-hidden="true"></i></span>

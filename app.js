@@ -291,6 +291,155 @@ document.addEventListener('DOMContentLoaded',()=>{
     return Math.abs(h) % 7; // matches avatar-bg-0..6
   }
 
+  const deviceRegions = [
+    { name: 'North America', lat: 39.8283, lng: -98.5795, latSpread: 10, lngSpread: 18 },
+    { name: 'Greenland', lat: 71.7069, lng: -42.6043, latSpread: 7, lngSpread: 8 },
+    { name: 'Atlantic', lat: 38.7223, lng: -28.1397, latSpread: 7, lngSpread: 10 },
+    { name: 'South America', lat: -14.235, lng: -51.9253, latSpread: 14, lngSpread: 12 },
+    { name: 'West Africa', lat: 6.5244, lng: 3.3792, latSpread: 9, lngSpread: 11 },
+    { name: 'Southern Africa', lat: -26.2041, lng: 28.0473, latSpread: 8, lngSpread: 9 },
+    { name: 'Indian Ocean', lat: -22.9576, lng: 43.5974, latSpread: 10, lngSpread: 10 },
+    { name: 'Central Asia', lat: 43.222, lng: 76.8512, latSpread: 8, lngSpread: 15 },
+    { name: 'Antarctica', lat: -77.8419, lng: 166.6863, latSpread: 3, lngSpread: 12 }
+  ];
+  const deviceStatuses = {
+    online: { label: 'Online', accent: '#1d4ed8' },
+    idle: { label: 'Idle', accent: '#2563eb' },
+    alert: { label: 'Alert', accent: '#0f3f9e' }
+  };
+  let deviceMap = null;
+  let deviceLayer = null;
+
+  function createSeededRandom(seed){
+    let value = 0;
+    for(let i = 0; i < seed.length; i += 1){
+      value = (value * 31 + seed.charCodeAt(i)) >>> 0;
+    }
+    if(value === 0) value = 0x12345678;
+    return function(){
+      value = (value * 1664525 + 1013904223) >>> 0;
+      return value / 4294967296;
+    };
+  }
+
+  function isConnectedSensorsOrg(name){
+    return name === 'Connected Sensors';
+  }
+
+  function getSelectedOrgName(){
+    const labelEl = orgBtn ? orgBtn.querySelector('.org-label') : null;
+    return labelEl ? labelEl.textContent.trim() : 'Gold Fields - South Deep';
+  }
+
+  function buildDeviceLocations(orgName){
+    const random = createSeededRandom(orgName || 'SIMAC');
+    const statuses = Object.keys(deviceStatuses);
+
+    return Array.from({ length: 10 }, (_, index)=>{
+      const region = deviceRegions[index % deviceRegions.length];
+      const latOffset = (random() - 0.5) * region.latSpread;
+      const lngOffset = (random() - 0.5) * region.lngSpread;
+      const status = statuses[Math.floor(random() * statuses.length)];
+
+      return {
+        id: `${String(orgName || 'SIM').slice(0, 3).toUpperCase()}-${String(index + 1).padStart(3, '0')}`,
+        name: `Device ${String(index + 1).padStart(2, '0')}`,
+        status,
+        region: region.name,
+        battery: `${Math.max(41, Math.round(48 + random() * 50))}%`,
+        lat: Number((region.lat + latOffset).toFixed(4)),
+        lng: Number((region.lng + lngOffset).toFixed(4)),
+        lastSeen: `${Math.max(1, Math.round(random() * 18))} min ago`
+      };
+    });
+  }
+
+  function updateOrganizationSpecificLabels(orgName = getSelectedOrgName()){
+    const machinesLabel = isConnectedSensorsOrg(orgName) ? t('nav.devices', 'Devices') : t('nav.machines', 'Machines');
+    document.querySelectorAll('.nav .label[data-i18n="nav.machines"]').forEach(el=>{
+      el.textContent = machinesLabel;
+    });
+    document.querySelectorAll('.nav .label[data-i18n="nav.map"]').forEach(el=>{
+      el.textContent = t('nav.map', 'Map');
+    });
+    const mapKicker = document.querySelector('[data-map-kicker]');
+    if(mapKicker) mapKicker.textContent = t('nav.map', 'Map');
+  }
+
+  function renderDeviceMap(orgName = getSelectedOrgName()){
+    const mapEl = document.getElementById('deviceMap');
+    if(!mapEl || !window.L) return;
+
+    const devices = buildDeviceLocations(orgName);
+    const summary = devices.reduce((acc, device)=>{
+      acc[device.status] += 1;
+      return acc;
+    }, { online: 0, idle: 0, alert: 0 });
+
+    const titleEl = document.getElementById('mapOrgName');
+    const totalEl = document.getElementById('mapDeviceTotal');
+    const onlineEl = document.getElementById('mapOnlineTotal');
+    const alertEl = document.getElementById('mapAlertTotal');
+    const chipOnline = document.getElementById('mapChipOnline');
+    const chipIdle = document.getElementById('mapChipIdle');
+    const chipAlert = document.getElementById('mapChipAlert');
+
+    if(titleEl) titleEl.textContent = orgName;
+    if(totalEl) totalEl.textContent = String(devices.length);
+    if(onlineEl) onlineEl.textContent = String(summary.online);
+    if(alertEl) alertEl.textContent = String(summary.alert);
+    if(chipOnline) chipOnline.textContent = `Online ${summary.online}`;
+    if(chipIdle) chipIdle.textContent = `Idle ${summary.idle}`;
+    if(chipAlert) chipAlert.textContent = `Alert ${summary.alert}`;
+
+    if(!deviceMap){
+      deviceMap = window.L.map(mapEl, {
+        zoomControl: true,
+        minZoom: 2,
+        maxZoom: 6,
+        worldCopyJump: true
+      }).setView([14, 12], 2);
+
+      window.L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+        subdomains: 'abcd'
+      }).addTo(deviceMap);
+    }
+
+    if(deviceLayer){
+      deviceLayer.clearLayers();
+    }
+    deviceLayer = window.L.featureGroup();
+
+    const bounds = [];
+    devices.forEach(device=>{
+      bounds.push([device.lat, device.lng]);
+      const marker = window.L.marker([device.lat, device.lng], {
+        icon: window.L.divIcon({
+          className: 'device-map-marker',
+          html: `<span class="device-map-pin device-map-pin--${device.status}"></span>`,
+          iconSize: [20, 20],
+          iconAnchor: [10, 20],
+          popupAnchor: [0, -18]
+        })
+      });
+      marker.bindPopup(`
+        <div class="device-map-popup">
+          <strong>${device.name}</strong>
+          <span>${device.id}</span>
+          <span>${deviceStatuses[device.status].label} • ${device.region}</span>
+          <span>Battery ${device.battery} • Last seen ${device.lastSeen}</span>
+        </div>
+      `);
+      marker.addTo(deviceLayer);
+    });
+
+    deviceLayer.addTo(deviceMap);
+    if(bounds.length){
+      deviceMap.fitBounds(bounds, { padding: [36, 36], maxZoom: 3 });
+    }
+  }
+
   function renderOrgList(filter){
     orgListEl.innerHTML = '';
     const q = (filter||'').trim().toLowerCase();
@@ -355,6 +504,8 @@ document.addEventListener('DOMContentLoaded',()=>{
     if(save){
       try{ localStorage.setItem('selectedOrg', o.name); }catch(e){ /* ignore */ }
     }
+    updateOrganizationSpecificLabels(o.name);
+    renderDeviceMap(o.name);
   }
 
   // restore selection from localStorage if present
@@ -631,6 +782,8 @@ document.addEventListener('DOMContentLoaded',()=>{
       orgSearch.setAttribute('aria-label', t('org.search_organizations', 'Search organizations'));
     }
     renderNotifications();
+    updateOrganizationSpecificLabels();
+    renderDeviceMap();
   }
 
   if(languageToggle){
